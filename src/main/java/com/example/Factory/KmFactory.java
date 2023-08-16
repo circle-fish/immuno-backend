@@ -1,14 +1,8 @@
 package com.example.Factory;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.example.Model.KmAppInfo;
-import com.example.Model.KmItem;
-import com.example.Model.KmTask;
-import com.example.TaskConfig;
+import com.example.model.KmAppInfo;
+import com.example.model.KmItem;
 import com.example.entity.KmcsTask;
-import com.example.entity.LabTask;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

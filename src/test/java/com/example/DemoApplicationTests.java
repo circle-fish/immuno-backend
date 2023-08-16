@@ -1,24 +1,16 @@
 package com.example;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONPath;
 import com.example.Factory.KmFactory;
-import com.example.Model.KmAppInfo;
+import com.example.model.KmAppInfo;
 import com.example.entity.KmcsTask;
-import com.example.entity.LabTask;
-import com.example.TaskConfig;
-import com.example.consumer.RQConsumer;
-import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
