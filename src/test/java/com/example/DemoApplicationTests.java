@@ -16,34 +16,6 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes =  DemoApplication.class)
 class DemoApplicationTests {
-    @Autowired
-    private MyTest myTest;
-    @Autowired
-    private KmFactory kmFactory;
 
-    @Test
-    void contextLoads() {
-    }
-    @Test
-    void test_convert() {
-        String message = GlobalInfo.message;
-
-        KmAppInfo kmAppInfo = JSONObject.parseObject(message,KmAppInfo.class);
-
-        List<KmcsTask> kmcsTasks = kmFactory.convert_to_kmcsTaskList(kmAppInfo);
-
-        for(int i = 0; i < kmcsTasks.size(); i++)
-        {
-            System.out.println(JSON.toJSONString(kmcsTasks.get(i)));
-        }
-        System.out.println("test over ________________________________________________________________");
-    }
-    @Test
-    void test_mq_convert()
-    {
-
-
-
-    }
 
 }

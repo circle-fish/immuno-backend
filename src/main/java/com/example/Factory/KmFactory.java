@@ -1,7 +1,8 @@
 package com.example.Factory;
 
-import com.example.model.KmAppInfo;
-import com.example.model.KmItem;
+import com.example.consumer.model.KmAppInfo;
+import com.example.consumer.model.KmDependTask;
+import com.example.consumer.model.KmItem;
 import com.example.entity.KmcsTask;
 import org.springframework.stereotype.Component;
 
@@ -11,39 +12,84 @@ import java.util.List;
 @Component
 public class KmFactory {
 
-    public  List<KmcsTask> convert_to_kmcsTaskList(KmAppInfo kmAppInfo)
+
+
+    private KmcsTask convertKmDependTaskToKmcsTask(
+            KmDependTask kmDependTask,
+            String applicationId,
+            String barcode,
+            String bizOrgCode,
+            String experimentNo
+    ){
+
+        KmcsTask kmcsTask = new KmcsTask();
+        kmcsTask.setTaskId(kmDependTask.getTaskId());
+        kmcsTask.setAppId(applicationId);
+        kmcsTask.setBarcode(barcode);
+        kmcsTask.setBizOrgCode(bizOrgCode);
+        kmcsTask.setExperimentNo(experimentNo);
+
+        kmcsTask.setTestItemCode(kmDependTask.getTestItemCode());
+        kmcsTask.setTestItemName(kmDependTask.getTestItemName());
+
+        kmcsTask.setLabTaskId(0L);
+        kmcsTask.setStatus(0);
+
+        return kmcsTask;
+    }
+
+    private List<KmcsTask> convertKmItemToKmcsTask(
+            KmItem kmItem,
+            String applicationId,
+            String barcode,
+            String bizOrgCode
+    ){
+        List<KmcsTask> kmcsTaskList = new ArrayList<>();
+
+        KmcsTask kmcsTask = new KmcsTask();
+        kmcsTask.setTaskId(kmItem.getTaskId());
+        kmcsTask.setAppId(applicationId);
+        kmcsTask.setBarcode(barcode);
+        kmcsTask.setBizOrgCode(bizOrgCode);
+        kmcsTask.setExperimentNo(kmItem.getExperimentNo());
+
+        kmcsTask.setTestItemCode(kmItem.getTestItemCode());
+        kmcsTask.setTestItemName(kmItem.getTestItemName());
+
+        kmcsTask.setLabTaskId(0L);
+        kmcsTask.setStatus(0);
+
+        kmcsTaskList.add(kmcsTask);
+
+        for (KmDependTask kmDependTask : kmItem.getDependTasks()){
+            kmcsTaskList.add(convertKmDependTaskToKmcsTask(
+                    kmDependTask,
+                    applicationId,
+                    barcode,
+                    bizOrgCode,
+                    kmItem.getExperimentNo()
+            ));
+        }
+        return  kmcsTaskList;
+    }
+
+    public  List<KmcsTask> convertToKmcsTaskList(KmAppInfo kmAppInfo)
     {
+        String applicationId = kmAppInfo.getApplicationId();
+        String barcode = kmAppInfo.getBarcode();
+        String bizOrgCode = kmAppInfo.getBizOrgCode();
+        List<KmcsTask> kmcsTaskList = new ArrayList<>();
 
-        List<KmcsTask> kmcsTask_list = new ArrayList<KmcsTask>();
-        int size = kmAppInfo.getItemList().size();//task 总数量
-        for(int i = 0; i < kmAppInfo.getItemList().size(); i++)
-            size+=kmAppInfo.getItemList().get(i).getDependTasks().size();
-
-        for(int i = 0 ;i < kmAppInfo.getItemList().size() ;i++ )
-        {
-            KmItem kmitem = kmAppInfo.getItemList().get(i);
-            for(int j = 0 ; j < kmitem.getDependTasks().size() + 1 ;j++) {
-                KmcsTask kmcsTask = new KmcsTask();
-                kmcsTask.setAppId(kmAppInfo.getApplicationId());
-                kmcsTask.setBarcode(kmAppInfo.getBarcode());
-                kmcsTask.setBizOrgCode(kmAppInfo.getBizOrgCode());
-                kmcsTask.setExperimentNo(kmAppInfo.getItemList().get(0).getExperimentNo());
-                kmcsTask.setStatus(kmitem.getStatus());
-                if (j == 0) {
-                    kmcsTask.setTaskId(kmitem.getTaskId());
-                    kmcsTask.setTestItemCode(kmitem.getTestItemCode());
-                    kmcsTask.setTestItemName(kmitem.getTestItemName());
-                } else{
-                    kmcsTask.setTaskId(kmitem.getDependTasks().get(j-1).getTaskId());
-                    kmcsTask.setTestItemCode(kmitem.getDependTasks().get(j-1).getTestItemCode());
-                    kmcsTask.setTestItemName(kmitem.getDependTasks().get(j-1).getTestItemName());
-                }
-
-                kmcsTask_list.add(kmcsTask);
-            }
+        for (KmItem kmItem : kmAppInfo.getItemList()){
+            kmcsTaskList.addAll(convertKmItemToKmcsTask(
+                    kmItem,
+                    applicationId,
+                    barcode,
+                    bizOrgCode
+            ));
         }
 
-        return kmcsTask_list;
+        return kmcsTaskList;
     }
 
 }

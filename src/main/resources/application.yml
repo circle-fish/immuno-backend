@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+rocketmq:
+  name-server: 10.20.2.167:9876,10.20.2.168:9876,10.20.2.169:9876
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: "jdbc:mysql://localhost:3306/project?useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai"
+    username: root
+    password: 985211
+
+km-mq:
+  topic: mqtest
+  consumer-group: mqtest-consumer
+
+
+

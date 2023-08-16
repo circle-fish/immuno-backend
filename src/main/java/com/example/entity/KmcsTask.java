@@ -22,6 +22,9 @@ public class KmcsTask implements Serializable,Cloneable{
     /**  */
     @ApiModelProperty(name = "",notes = "")
     private String appId ;
+     /**  */
+     @ApiModelProperty(name = "",notes = "")
+     private String bizOrgCode ;
     /**  */
     @ApiModelProperty(name = "",notes = "")
     private String barcode ;
@@ -34,9 +37,7 @@ public class KmcsTask implements Serializable,Cloneable{
     /**  */
     @ApiModelProperty(name = "",notes = "")
     private String testItemName ;
-    /**  */
-    @ApiModelProperty(name = "",notes = "")
-    private String bizOrgCode ;
+
     /**  */
     @ApiModelProperty(name = "",notes = "")
     private Long labTaskId ;
