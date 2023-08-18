@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <settings>
+        <!--是否开启驼峰命名自动映射,默认false，created_time -> createdTime 如果不开启在mapper里面也可以设置 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!--打印Sql日志log-->
+        <!--        <setting name="logImpl" value="STDOUT_LOGGING"/>-->
+    </settings>
+
+    <!--别名-->
+    <typeAliases>
+        <!--一旦设置了别名，不区分大小写-->
+        <!--        <typeAlias type="com.mj.bean.Skill" alias="skill"/>-->
+        <!--        <typeAlias type="com.mj.bean.Experience" alias="experience"/>-->
+        <!--这个包下的所有类，都会有一个别名：短类名也就是全类名的最后一个单词-->
+        <package name="com.example.entity"/>
+    </typeAliases>
+
+    <environments default="dev">
+        <environment id="dev">
+            <!--采用JDBC的事物管理方法-->
+            <transactionManager type="JDBC"/>
+            <!--POOLED代表采用连接池的方式管理链接 更改成阿里巴巴的连接池-->
+            <dataSource type="com.example.common.Dr">
+                <!--数据库驱动-->
+                <!--阿里巴巴连接池这个名字是driverClassName-->
+                <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/project"/>
+                <property name="username" value="root"/>
+                <property name="password" value="985211"/>
+            </dataSource>
+        </environment>
+
+        <environment id="pro">
+            <!--采用JDBC的事物管理方法-->
+            <transactionManager type="JDBC"/>
+            <!--POOLED代表采用连接池的方式管理链接-->
+            <dataSource type="POOLED">
+                <!--数据库驱动-->
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/project"/>
+                <property name="username" value="root"/>
+                <property name="password" value="985211"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <!--映射文件-->
+        <mapper resource="mapping/DeviceMapper.xml" />
+        <mapper resource="mapping/HelloAiTaskMapper.xml" />
+        <mapper resource="mapping/HelloImageMapper.xml" />
+        <mapper resource="mapping/HeliosReagentDetailMapper.xml" />
+        <mapper resource="mapping/KmcsTaskMapper.xml" />
+        <mapper resource="mapping/KmcsUserMapper.xml" />
+        <mapper resource="mapping/LabOrderMapper.xml" />
+        <mapper resource="mapping/LabTaskMapper.xml" />
+        <mapper resource="mapping/KmcsTaskMapper.xml" />
+        <mapper resource="mapping/LabTestItemMapper.xml" />
+
+    </mappers>
+
+</configuration>

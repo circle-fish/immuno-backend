@@ -1,0 +1,174 @@
+{
+    "applicationId": "833b122e-d06e-4fc8-84a9-55c3bae40920",
+    "barcode": "MY2023051703",
+    "bizOrgCode": "K010101001",
+    "sampleNum": "1",
+    "itemList": [
+        {
+            "testItemCode": "50601",
+            "status": "0",
+            "testItemName": "浆细胞肿瘤相关CD系列检测(15CD),流式细胞术",
+            "experimentNo": "Le182607",
+            "mainExperimentNo": null,
+            "isEpiboly": "0",
+            "isRedo": "0",
+            "isDna": "0",
+            "isAdd": "0",
+            "specimenStyleCode": "46",
+            "epibolyList": [],
+            "kmcsAppTestSetId": "a71348a8-80ad-48ff-b481-e49ad27bed61",
+            "receiveDate": "2023-05-17 14:55:41",
+            "specimenReceiveDate": "2023-05-17 14:54:41",
+            "expiryDate": "2023-05-18 22:00:00",
+            "sampleTypId": "46",
+            "sampleType": "骨髓",
+            "createdBy": "1EAEB30D67C97E15E0530100007FBBE3____",
+            "osOdd": null,
+            "seqGene": null,
+            "seqHgvs": null,
+            "seqChr": null,
+            "seqStart": null,
+            "seqEnd": null,
+            "addType": null,
+            "remention": "0",
+            "addReason": null,
+            "testOrgCode": "K01010100109P005",
+            "abscissa": null,
+            "ordinate": null,
+            "examLoc": null,
+            "receiveOrderNo": null,
+            "taskId": "e97d25a9-32ca-4d2d-be38-cf91a55abf67",
+            "masterOrSlave": null,
+            "labsTemplateCode": "Le000001",
+            "mpId": "267802F2E2BB5CFCE053DD02A8C0ADF1____",
+            "testItemId": "6b4db5f2-9050-4792-90c0-bb419b4eaf32",
+            "estimateDate": "2023-05-18 22:00:00",
+            "zhTestItemCode": null,
+            "zhTestItemName": null,
+            "zhIndex": "10000",
+            "faOdd": null,
+            "sendSpecimen": null,
+            "testItemType": "single",
+            "kmctProjCode": null,
+            "kmctProjType": null,
+            "subbarcode": "MY2023051703-01",
+            "dependTasks": [
+                {
+                    "taskId": "d90c308b-7712-437b-a275-871a9bba5fd7",
+                    "testItemCode": "CS0863",
+                    "testItemName": "淋巴细胞所占比率(%)"
+                },
+                {
+                    "taskId": "a131adb2-ba08-4b68-87e2-96b9fd25cb96",
+                    "testItemCode": "CS0864",
+                    "testItemName": "淋巴细胞细胞系/亚型分析"
+                },
+                {
+                    "taskId": "098f0eae-f3d0-4e7b-8e40-cdcb528dcd39",
+                    "testItemCode": "CS0865",
+                    "testItemName": "粒细胞所占比率(%)"
+                },
+                {
+                    "taskId": "7eac5a95-ba68-4e83-8509-bf4564f4a835",
+                    "testItemCode": "CS0866",
+                    "testItemName": "粒细胞细胞系/亚型分析"
+                },
+                {
+                    "taskId": "ef45d651-91bf-49fb-b8ea-f94700ad8788",
+                    "testItemCode": "CS0867",
+                    "testItemName": "单核细胞所占比率(%)"
+                },
+                {
+                    "taskId": "4d8732eb-7373-4aae-ab14-7a407f9a31de",
+                    "testItemCode": "CS0868",
+                    "testItemName": "单核细胞细胞系/亚型分析"
+                },
+                {
+                    "taskId": "1d8561d4-afc7-48ea-a482-034b184b450a",
+                    "testItemCode": "CS0869",
+                    "testItemName": "幼稚细胞所占比率(%)"
+                },
+                {
+                    "taskId": "a241c534-04d8-4701-8ec4-db78bc60cb6d",
+                    "testItemCode": "CS0870",
+                    "testItemName": "幼稚细胞细胞系/亚型分析"
+                },
+                {
+                    "taskId": "9e4e226b-3e4e-4a8a-8612-ed34f1ff151a",
+                    "testItemCode": "CS0871",
+                    "testItemName": "非白细胞所占比率 (%)"
+                },
+                {
+                    "taskId": "9c1ecdc4-88ba-4813-bb07-d7e3f1d8d727",
+                    "testItemCode": "CS0872",
+                    "testItemName": "非白细胞细胞系/亚型分析"
+                },
+                {
+                    "taskId": "3c0eb4f8-c164-4c9b-8ac9-3105c596bea8",
+                    "testItemCode": "CS0873",
+                    "testItemName": "样本活性(%)"
+                },
+                {
+                    "taskId": "84d7dc6f-b710-4005-bf94-93f5db188441",
+                    "testItemCode": "CS0874",
+                    "testItemName": "适检细胞数"
+                },
+                {
+                    "taskId": "88b95963-7837-4e1c-8fbb-28acc263f2b4",
+                    "testItemCode": "CS0875",
+                    "testItemName": "其它."
+                },
+                {
+                    "taskId": "c1045fb6-c8a5-4aed-a911-e688c891b32f",
+                    "testItemCode": "CS0876",
+                    "testItemName": "CD抗原检测次数"
+                },
+                {
+                    "taskId": "1e4ef594-99e2-4d53-a2c3-41ac6cfa56b7",
+                    "testItemCode": "CS1466",
+                    "testItemName": "WBC数目"
+                }
+            ]
+        }
+    ],
+    "hospital": "子公司医院44002220",
+    "contractCollectName": null,
+    "customerHospitalId": "1DB5F1B8D1C675AFE0537C02A8C0B6B0____",
+    "hospitalId": null,
+    "patientNo": null,
+    "patientName": null,
+    "sex": null,
+    "age1": null,
+    "ageUnit1": "岁",
+    "age2": null,
+    "ageUnit2": "",
+    "birthday": null,
+    "signTime": "2023-05-17 14:54:41",
+    "dataEnterTime": "2023-05-17 14:54:41",
+    "companyId": "K0101",
+    "companyName": "广州金域医学检验中心有限公司",
+    "isUrgent": "0",
+    "isUpdate": "0",
+    "isInRedo": "0",
+    "oldBarcode": null,
+    "diagnose": null,
+    "departmentName": null,
+    "doctorName": null,
+    "inspectionList": [],
+    "isModifyReport": null,
+    "isQc": null,
+    "patientPhone": null,
+    "gravidaWeek": null,
+    "gravidaDay": null,
+    "bedNo": null,
+    "doctorPhone": null,
+    "samplingTime": null,
+    "nomenstrual": null,
+    "gestationMethod": null,
+    "fetusCase": null,
+    "kmctProjectCode": null,
+    "receivePlace": "子公司医院44002220-001",
+    "kmctProjType": null,
+    "testItemCodeList": null,
+    "receiveDate": "2023-05-17 14:54:41"
+}

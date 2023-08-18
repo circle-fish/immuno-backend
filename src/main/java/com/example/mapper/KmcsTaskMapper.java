@@ -23,4 +23,14 @@ public interface KmcsTaskMapper  extends BaseMapper<KmcsTask>{
      * @return 分页对象列表
      */
     IPage<KmcsTask> selectByPage(IPage<KmcsTask> page , @Param(Constants.WRAPPER) Wrapper<KmcsTask> wrapper);
+
+
+     KmcsTask selectById(@Param("taskId") String taskId);
+
+     Integer deleteByTaskId(@Param("taskId") String taskId);
+
+     Integer updateKmcsTask(@Param("kmscTask") KmcsTask kmcsTask);
+
+     Integer insertKmcsTask(@Param("kmscTask") KmcsTask kmcsTask);
+
 }

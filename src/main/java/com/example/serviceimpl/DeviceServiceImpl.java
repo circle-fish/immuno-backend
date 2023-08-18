@@ -10,11 +10,7 @@ import com.example.mapper.DeviceMapper;
 import com.example.service.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
- /**
- * ;(device)表服务实现类
- * @author : http://www.chiner.pro
- * @date : 2023-8-11
- */
+
 @Service
 public class DeviceServiceImpl implements DeviceService{
     @Autowired
