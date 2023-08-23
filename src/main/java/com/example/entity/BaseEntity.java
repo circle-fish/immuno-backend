@@ -3,14 +3,20 @@ package com.example.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class BaseEntity {
+public class BaseEntity<T extends Serializable> {
+
+    @ApiModelProperty(name = "",notes = "")
+    @TableId
+    private Long id ;
 
     @TableField(value = "version",fill = FieldFill.INSERT)
     private Integer version ;
@@ -28,4 +34,5 @@ public class BaseEntity {
     /**  */
     @TableField(value = "updated_by",fill = FieldFill.INSERT_UPDATE)
     private String updatedBy ;
+
 }

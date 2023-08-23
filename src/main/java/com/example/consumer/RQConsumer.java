@@ -2,6 +2,7 @@ package com.example.consumer;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.Factory.KmFactory;
+import com.example.common.MapperHelpper;
 import com.example.consumer.model.KmAppInfo;
 import com.example.entity.KmcsTask;
 import com.example.mapper.KmcsTaskMapper;
@@ -25,15 +26,16 @@ public class RQConsumer implements RocketMQListener<String> {
     private static Logger logger = LoggerFactory.getLogger(RQConsumer.class);
     @Autowired
     private KmFactory kmFactory;
-
+    @Autowired
+    private MapperHelpper mapperHelpper;
     @Autowired
     private KmcsTaskMapper kmcsTaskMapper;
 
-    private void convert(String message) {
+    private void convert(String message) throws NoSuchFieldException {
         KmAppInfo kmAppInfo = JSONObject.parseObject(message, KmAppInfo.class);
         List<KmcsTask> kmcsTasks = kmFactory.convertToKmcsTaskList(kmAppInfo);
         for (KmcsTask kmcsTask : kmcsTasks) {
-            kmcsTaskMapper.insertKmcsTask(kmcsTask);
+            mapperHelpper.upsert(kmcsTask,kmcsTaskMapper);
         }
         logger.info("Consumer convert completed........");
     }
@@ -41,8 +43,12 @@ public class RQConsumer implements RocketMQListener<String> {
     @Override
     public void onMessage(String message) {
 //        logger.info("get message : /n" + message);
-        logger.info("consumer start converting  ..........");
-        convert(message);
+        logger.info("consumer start converting  ........../n");
+        try {
+            convert(message);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 }

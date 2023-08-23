@@ -1,6 +1,9 @@
 package com.example.serviceimpl;
 
 import cn.hutool.core.util.StrUtil;
+import com.example.common.MapperHelpper;
+import com.example.entity.Device;
+import com.example.mapper.DeviceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -17,6 +20,8 @@ import com.example.service.KmcsTaskService;
  */
 @Service
 public class KmcsTaskServiceImpl implements KmcsTaskService{
+    @Autowired
+    private MapperHelpper mapperHelpper;
     @Autowired
     private KmcsTaskMapper kmcsTaskMapper;
     
@@ -140,4 +145,6 @@ public class KmcsTaskServiceImpl implements KmcsTaskService{
         int total = kmcsTaskMapper.deleteById(taskId);
         return total > 0;
     }
+
+
 }

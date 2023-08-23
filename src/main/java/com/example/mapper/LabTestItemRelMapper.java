@@ -7,8 +7,11 @@ import com.baomidou.mybatisplus.core.toolkit.Constants;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.example.entity.LabTestItemRel;
+import org.apache.ibatis.annotations.Select;
 
- /**
+import java.util.List;
+
+/**
  * ;(lab_test_item_rel)表数据库访问层
  * @author : http://www.chiner.pro
  * @date : 2023-8-11
@@ -23,4 +26,10 @@ public interface LabTestItemRelMapper  extends BaseMapper<LabTestItemRel>{
      * @return 分页对象列表
      */
     IPage<LabTestItemRel> selectByPage(IPage<LabTestItemRel> page , @Param(Constants.WRAPPER) Wrapper<LabTestItemRel> wrapper);
+    @Select("select * from lab_test_item_rel where kmcs_test_item_code = #{testItemCode} and biz_org_code = #{bizOrgCode}")
+    List<LabTestItemRel> selectLabTestItemRelByTestItemCode(@Param("testItemCode") String testItemCode, @Param("bizOrgCode") String bizOrgCode);
+
+
+    @Select("select * from lab_test_item_rel where lab_test_item_id = #{labTestItemId}")
+    List<LabTestItemRel> selectLabTestItemRelByTestItemId(@Param("labTestItemId") Long labTestItemId);
 }

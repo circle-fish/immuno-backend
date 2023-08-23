@@ -13,7 +13,7 @@ import java.util.Date;
 @ApiModel(value = "",description = "")
 @TableName("kmcs_user")
 @Data
-public class KmcsUser{
+public class KmcsUser extends BaseEntity{
     /**  */
     @ApiModelProperty(name = "",notes = "")
     @TableId

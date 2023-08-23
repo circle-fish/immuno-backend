@@ -7,8 +7,8 @@
     <settings>
         <!--是否开启驼峰命名自动映射,默认false，created_time -> createdTime 如果不开启在mapper里面也可以设置 -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
-        <!--打印Sql日志log-->
-        <!--        <setting name="logImpl" value="STDOUT_LOGGING"/>-->
+<!--        打印Sql日志log-->
+                <setting name="logImpl" value="STDOUT_LOGGING"/>
     </settings>
 
     <!--别名-->

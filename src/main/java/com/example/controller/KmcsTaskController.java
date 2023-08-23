@@ -22,7 +22,8 @@ import com.example.service.KmcsTaskService;
 public class KmcsTaskController{
     @Autowired
     private KmcsTaskService kmcsTaskService;
-    
+
+
     /** 
      * 通过ID查询单条数据 
      *
@@ -34,7 +35,7 @@ public class KmcsTaskController{
     public ResponseEntity<KmcsTask> queryById(String taskId){
         return ResponseEntity.ok(kmcsTaskService.queryById(taskId));
     }
-    
+
     /** 
      * 分页查询
      *

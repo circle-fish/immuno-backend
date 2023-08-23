@@ -17,23 +17,23 @@
 
 
     <!-- 根据id删除数据 -->
-    <delete id="deleteByTaskId" parameterType="java.lang.String">
+    <delete id="deleteById" parameterType="java.lang.Integer">
         DELETE FROM kmcs_task WHERE task_id = #{taskId}
     </delete>
 
-    <!-- 更新数据 -->
     <update id="updateKmcsTask" parameterType="com.example.entity.KmcsTask">
-        UPDATE kmsc_task
-        SET task_id = #{taskId},  app_id = #{appId},barcode = #{barcode}, experiment_no = #{experimentNo}
-        ,test_item_code = #{testItemCode},test_item_name = #{testItemName},big_org_code = #{bizOrgCode}
-        WHERE task_id = #{taskId}
-        <if test="name != null and name != ''">
-            AND name = #{name}
+
+        UPDATE kmcs_task
+        SET task_id = #{taskId},  app_id = #{appId},barcode = #{barcode}, experiment_no = #{experimentNo},
+            test_item_code = #{testItemCode},test_item_name = #{testItemName},biz_org_code = #{bizOrgCode},
+            lab_task_id = #{labTaskId}, status = #{status}, created_time = #{createdTime},
+            updated_time = #{updatedTime}, created_by = #{createdBy}, updated_by = #{updatedBy}
+        <if test="task_id != null and task_id != ''">
+            AND task_id = #{task_id}
         </if>
-        <if test="age != null">
-            AND age = #{age}
-        </if>
+
     </update>
+
 
     <insert id="insertKmcsTask" parameterType="com.example.entity.KmcsTask">
         INSERT INTO kmcs_task(task_id,app_id,barcode,expeiment_no,test_item_code

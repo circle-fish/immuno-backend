@@ -1,5 +1,7 @@
 package com.example.entity;
 
+import com.example.common.EnumManager;
+
 import com.example.entity.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -22,6 +24,11 @@ public class LabTestItem extends BaseEntity {
     /**  */
     @ApiModelProperty(name = "",notes = "")
     private String name ;
+    /**
+     * 项目代码
+     * */
+    @ApiModelProperty(name = "",notes = "")
+    private String code ;
     /**  */
     @ApiModelProperty(name = "",notes = "")
     private Integer type ;
@@ -46,5 +53,8 @@ public class LabTestItem extends BaseEntity {
     /**  */
     @ApiModelProperty(name = "",notes = "")
     private Long reagentDetailId ;
+
+    @ApiModelProperty(name = "",notes = "转换模式")
+    private EnumManager.LabTestItemMode conversionMode ;
 
 }

@@ -8,7 +8,7 @@ import com.example.entity.Device;
  * @author : http://www.chiner.pro
  * @date : 2023-8-11
  */
-public interface DeviceService{
+public interface DeviceService {
     
     /** 
      * 通过ID查询单条数据 

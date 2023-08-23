@@ -9,7 +9,7 @@ import lombok.Data;
 @ApiModel(value = "",description = "")
 @TableName("lab_test_item_rel")
 @Data
-public class LabTestItemRel{
+public class LabTestItemRel extends BaseEntity{
     /**  */
     @ApiModelProperty(name = "",notes = "")
     @TableId
