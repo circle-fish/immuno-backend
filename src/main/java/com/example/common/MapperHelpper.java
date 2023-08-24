@@ -9,7 +9,7 @@ import java.sql.Wrapper;
 @Component
 public class MapperHelpper {
 
-    public int upsert(BaseEntity baseEntity, BaseMapper mapper ) throws NoSuchFieldException {
+    public int upsert(BaseEntity baseEntity, BaseMapper mapper ) {
         int res = 0;
         Long id  = baseEntity.getId();
         if(mapper.selectById(id)!=null)

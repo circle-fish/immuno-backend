@@ -2,6 +2,8 @@ package com.example.model.dataModel;
 
 import com.example.entity.KmcsTask;
 import com.example.entity.LabTask;
+import com.example.entity.LabTestItem;
+import com.example.entity.LabTestItemRel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,7 +14,7 @@ import java.util.List;
  */
 @Data
 @AllArgsConstructor
-public class ConversionResult {
-    List<LabTask> labTasks;
-    List<KmcsTask> kmcsTasks;
+public class FileReadResult {
+    List<LabTestItem> labTestItems;
+    List<LabTestItemRel> labTestItemRels;
 }

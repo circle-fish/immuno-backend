@@ -29,8 +29,8 @@ public class MyProducer {
         rocketMQTemplate.convertAndSend(topic,message);
     }
 
-    @PostMapping("/receive")
-    public void receive(@RequestBody String message) throws MQClientException, MQBrokerException, RemotingException, InterruptedException, UnsupportedEncodingException {
+    @PostMapping("/send")
+    public void send(@RequestBody String message) throws MQClientException, MQBrokerException, RemotingException, InterruptedException, UnsupportedEncodingException {
         //创建一个消息生产者，并设置一个消息生产者组
         DefaultMQProducer producer = new DefaultMQProducer("producer_group2");
         //指定 NameServer 地址

@@ -10,6 +10,10 @@ rocketmq:
 
 
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher   #swggweUI报错了就加这个
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: "jdbc:mysql://localhost:3306/project?useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai"

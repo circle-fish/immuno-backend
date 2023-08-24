@@ -16,13 +16,14 @@ import com.example.mapper.LabTaskMapper;
 import com.example.model.dataModel.ConversionResult;
 import com.example.model.response.BaseResponse;
 import com.example.producer.MyProducer;
-import com.example.serviceimpl.KmcsTaskServiceImpl;
+
 import com.example.serviceimpl.TaskConversionServiceImpl;
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.junit.jupiter.api.Test;
+
+import org.apache.rocketmq.client.exception.MQBrokerException;
+import org.apache.rocketmq.client.exception.MQClientException;
+import org.apache.rocketmq.remoting.exception.RemotingException;
+import org.junit.Test;
+
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -97,10 +98,11 @@ class DemoApplicationTests {
     }
 
     @Test
-    public void testMessageFlow() throws IOException {
+    public void testMessageFlow() throws IOException, MQBrokerException, RemotingException, InterruptedException, MQClientException {
 
         String message = read("D:\\work\\projects\\kmcs-demo\\demo2\\immuno-backend\\src\\main\\resources\\KmcsData.txt");
-        myProducer.sendMessage("mqtest",message);
+        myProducer.send(message);
+
     }
     @Test void testMapperHelper() throws IOException, NoSuchFieldException {
 
@@ -112,6 +114,10 @@ class DemoApplicationTests {
         BaseResponse<ConversionResult> response = taskConversionService.convertKmTaskToLabTask(bizOrgCode);
         System.out.println(response.getCode());
         System.out.println(response.getMessage());
+        List<LabTask> labTasks = response.getData().getLabTasks();
+        System.out.println(labTasks.size());
+        for(int i = 0 ;i < labTasks.size() ; i ++)
+            System.out.println(JSON.toJSONString(labTasks.get(i)));
     }
 
 }

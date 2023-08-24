@@ -25,6 +25,6 @@ public class LabTestItemRel extends BaseEntity{
     private String kmcsTestItemName ;
     /**  */
     @ApiModelProperty(name = "",notes = "")
-    private Long labTestItemId ;
+    private String labTestItemCode ;
 
 }

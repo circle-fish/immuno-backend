@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
+import com.example.entity.LabTestItem;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.example.entity.LabTestItemRel;
@@ -26,10 +27,11 @@ public interface LabTestItemRelMapper  extends BaseMapper<LabTestItemRel>{
      * @return 分页对象列表
      */
     IPage<LabTestItemRel> selectByPage(IPage<LabTestItemRel> page , @Param(Constants.WRAPPER) Wrapper<LabTestItemRel> wrapper);
-    @Select("select * from lab_test_item_rel where kmcs_test_item_code = #{testItemCode} and biz_org_code = #{bizOrgCode}")
-    List<LabTestItemRel> selectLabTestItemRelByTestItemCode(@Param("testItemCode") String testItemCode, @Param("bizOrgCode") String bizOrgCode);
+    @Select("select * from lab_test_item_rel where kmcs_test_item_code = #{KmcsTestItemCode} and biz_org_code = #{bizOrgCode}")
+    LabTestItemRel selectLabTestItemRelByKmcsTestItemCode(@Param("KmcsTestItemCode") String KmcsTestItemCode, @Param("bizOrgCode") String bizOrgCode);
+    //一个kmcsTaskCode 只返回一个LabTestItemRel ？？
 
 
-    @Select("select * from lab_test_item_rel where lab_test_item_id = #{labTestItemId}")
-    List<LabTestItemRel> selectLabTestItemRelByTestItemId(@Param("labTestItemId") Long labTestItemId);
+    @Select("select * from lab_test_item")
+    List<LabTestItemRel> findAll();
 }

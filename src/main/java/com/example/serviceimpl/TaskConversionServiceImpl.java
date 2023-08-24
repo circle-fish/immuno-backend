@@ -2,11 +2,13 @@ package com.example.serviceimpl;
 
 import com.example.Factory.LabTaskFactory;
 import com.example.common.EnumManager;
+import com.example.common.MapperHelpper;
 import com.example.entity.KmcsTask;
 import com.example.entity.LabTask;
 import com.example.entity.LabTestItem;
 import com.example.entity.LabTestItemRel;
 import com.example.mapper.KmcsTaskMapper;
+import com.example.mapper.LabTaskMapper;
 import com.example.mapper.LabTestItemMapper;
 import com.example.mapper.LabTestItemRelMapper;
 import com.example.model.dataModel.ConversionResult;
@@ -28,6 +30,11 @@ import java.util.stream.Collectors;
 public class TaskConversionServiceImpl implements TaskConversionService {
 
     @Autowired
+    MapperHelpper mapperHelpper;
+
+    @Autowired
+    private LabTaskMapper labTaskMapper;
+    @Autowired
     private KmcsTaskMapper kmcsTaskMapper;
 
     @Autowired
@@ -44,7 +51,6 @@ public class TaskConversionServiceImpl implements TaskConversionService {
      * @param kmcsTask
      */
     private ConversionResult convertOneOnOne(KmcsTask kmcsTask,
-                                             List<LabTestItemRel> labTestItemRel,
                                              Map<KmcsTask,LabTestItem> kmTasksToTestItems){
         LabTestItem labTaskItem = kmTasksToTestItems.get(kmcsTask);
         LabTask labTask = labTaskFactory.createLabTask(kmcsTask, labTaskItem);
@@ -64,7 +70,6 @@ public class TaskConversionServiceImpl implements TaskConversionService {
      * @param kmcsTask
      */
     private ConversionResult convertManyToOne(KmcsTask kmcsTask,
-                                              List<LabTestItemRel> labTestItemRel,
                                               Map<KmcsTask,LabTestItem> kmTasksToTestItems
     ) {
         LabTestItem labTaskItem = kmTasksToTestItems.get(kmcsTask);
@@ -74,7 +79,7 @@ public class TaskConversionServiceImpl implements TaskConversionService {
         if (conversionMode == EnumManager.LabTestItemMode.LOOSE) {
             for (KmcsTask kmTask : kmTasksToTestItems.keySet()) {
                 LabTestItem templabTaskItem = kmTasksToTestItems.get(kmTask);
-                if (templabTaskItem.getId() == labTaskItem.getId()) {
+                if (templabTaskItem.getCode() == labTaskItem.getCode()) {
                     kmTasks.add(kmTask);
                 }
             }
@@ -82,7 +87,7 @@ public class TaskConversionServiceImpl implements TaskConversionService {
         if (conversionMode == EnumManager.LabTestItemMode.STRICT) {
             for (KmcsTask kmTask : kmTasksToTestItems.keySet()) {
                 LabTestItem templabTaskItem = kmTasksToTestItems.get(kmTask);
-                if (templabTaskItem.getId() == labTaskItem.getId()) {
+                if (templabTaskItem.getCode() == labTaskItem.getCode()) {
                     kmTasks.add(kmTask);
                 } else {
                     return new ConversionResult(new ArrayList<>(), new ArrayList<>());
@@ -98,15 +103,14 @@ public class TaskConversionServiceImpl implements TaskConversionService {
     }
 
     private ConversionResult doConvertStrategy(KmcsTask kmTask,
-                                               List<LabTestItemRel> labTestItemRels,
                                                Map<KmcsTask,LabTestItem> kmTasksToTestItems){
-        if (labTestItemRels.size() == 0){
+        if (kmTasksToTestItems.size() == 0){
             return new ConversionResult(new ArrayList<>(), new ArrayList<>());
-        }else if (labTestItemRels.size() == 1){
-            return convertOneOnOne(kmTask,labTestItemRels,kmTasksToTestItems);
+        }else if (kmTasksToTestItems.size() == 1){
+            return convertOneOnOne(kmTask,kmTasksToTestItems);
         }
         else{
-            return convertManyToOne(kmTask,labTestItemRels,kmTasksToTestItems);
+            return convertManyToOne(kmTask,kmTasksToTestItems);
         }
     }
 
@@ -121,10 +125,8 @@ public class TaskConversionServiceImpl implements TaskConversionService {
             if (kmTask.getStatus() != 0){
                 continue;
             }
-            List<LabTestItemRel> labTestItemRels = labTestItemRelMapper.selectLabTestItemRelByTestItemCode(
-                    kmTask.getTestItemCode(),kmTask.getBizOrgCode()
-            );
-            ConversionResult conversionResult = doConvertStrategy(kmTask,labTestItemRels,kmTasksToTestItems);
+
+            ConversionResult conversionResult = doConvertStrategy(kmTask,kmTasksToTestItems);
             labTasks.addAll(conversionResult.getLabTasks());
             kmTasksForUpdate.addAll(conversionResult.getKmcsTasks());
         }
@@ -138,30 +140,61 @@ public class TaskConversionServiceImpl implements TaskConversionService {
         if (kmTasks.size() == 0) {
             return new BaseResponse<>("404", "No task found", null);
         }
-        Map<KmcsTask,LabTestItem> kmTasksToTestItems = new HashMap<>();
-        for(KmcsTask kmcsTask : kmTasks)
-        {
-            LabTestItem labTaskItem = labTestItemMapper.selectLabTestItemByCode(
-                    kmcsTask.getTestItemCode(),
-                    kmcsTask.getBizOrgCode());
 
-            kmTasksToTestItems.put(kmcsTask,labTaskItem);
-        }
-
-        List<LabTask> labTasks = new ArrayList<>();
-        List<KmcsTask> kmcsTasks = new ArrayList<>();
         Map<String, List<KmcsTask>> kmTaskGroupByAppId = kmTasks
                 .stream()
                 .collect(Collectors.groupingBy(
                         KmcsTask::getAppId
                 ));
+
+        List<LabTask> labTasks = new ArrayList<>();
+        List<KmcsTask> kmcsTasks = new ArrayList<>();
+
         for(String appId: kmTaskGroupByAppId.keySet()){
-            List<KmcsTask> kmTasksInAppGroup = kmTaskGroupByAppId.get(appId);
+            List<KmcsTask> kmTasksInAppGroup =  kmTaskGroupByAppId.get(appId);
+            Map<KmcsTask,LabTestItem> kmTasksToTestItems = getKmTasksToTestItemsInAppGroup(kmTasksInAppGroup);
             labTasks.addAll(convertTaskInAppGroup(kmTasksToTestItems).getLabTasks());
             kmcsTasks.addAll((convertTaskInAppGroup(kmTasksToTestItems).getKmcsTasks()));
-
         }
-        ConversionResult conversionResult = new ConversionResult(labTasks,kmcsTasks);
+
+        ConversionResult conversionResult = DBModificationTransaction(new ConversionResult(labTasks,kmcsTasks));
+        //return 在数据中修改过的对象
         return new BaseResponse<>("200", "success", conversionResult);
     }
+
+    @Transactional
+    public Map<KmcsTask,LabTestItem> getKmTasksToTestItemsInAppGroup(List<KmcsTask> KmTasksInAppGroup) {
+        Map<KmcsTask,LabTestItem> kmTasksToTestItems = new HashMap<>();
+        for(KmcsTask kmcsTask : KmTasksInAppGroup)
+        {
+            LabTestItemRel  labTestItemRel = labTestItemRelMapper.selectLabTestItemRelByKmcsTestItemCode(
+                    kmcsTask.getTestItemCode(),kmcsTask.getBizOrgCode());
+            if(labTestItemRel==null)
+                continue;
+            LabTestItem labTaskItem = labTestItemMapper.selectLabTestItemByCode(
+                    labTestItemRel.getLabTestItemCode(),
+                    labTestItemRel.getBizOrgCode()
+            );
+
+            kmTasksToTestItems.put(kmcsTask,labTaskItem);
+        }
+        return kmTasksToTestItems;
+    }
+
+    @Transactional
+    public ConversionResult DBModificationTransaction(ConversionResult conversionResult) {
+
+        for (LabTask labTask : conversionResult.getLabTasks()) {
+            mapperHelpper.upsert(labTask,labTaskMapper);
+        }
+        for (KmcsTask kmcsTask : conversionResult.getKmcsTasks()) {
+                kmcsTask.setStatus(1);
+            mapperHelpper.upsert(kmcsTask,kmcsTaskMapper);
+        }
+        return new ConversionResult(conversionResult.getLabTasks(),conversionResult.getKmcsTasks());
+
+    }
+
 }
+
+

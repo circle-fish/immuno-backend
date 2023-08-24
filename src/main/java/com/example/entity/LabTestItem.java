@@ -26,18 +26,15 @@ public class LabTestItem extends BaseEntity {
     private String name ;
     /**
      * 项目代码
+     * 在一个子公司中的testItemCode是唯一的
      * */
     @ApiModelProperty(name = "",notes = "")
     private String code ;
-    /**  */
-    @ApiModelProperty(name = "",notes = "")
-    private Integer type ;
-    /**  */
-    @ApiModelProperty(name = "",notes = "")
-    private Integer transferMode ;
-    /**  */
-    @ApiModelProperty(name = "",notes = "")
-    private Integer resultType ;
+
+    @ApiModelProperty(name = "",notes = "转换模式")
+    private EnumManager.LabTestItemMode conversionMode ;
+
+
     /**  */
     @ApiModelProperty(name = "",notes = "")
     private String bizOrgCode ;
@@ -50,11 +47,5 @@ public class LabTestItem extends BaseEntity {
     /**  */
     @ApiModelProperty(name = "",notes = "")
     private Integer reagentType ;
-    /**  */
-    @ApiModelProperty(name = "",notes = "")
-    private Long reagentDetailId ;
-
-    @ApiModelProperty(name = "",notes = "转换模式")
-    private EnumManager.LabTestItemMode conversionMode ;
 
 }
