@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.mapper.LabTestItemMapper">
-     <select id="selectByPage" resultType="com.example.entity.LabTestItem">
+<mapper namespace="com.kingmed.immuno.mapper.LabTestItemMapper">
+     <select id="selectByPage" resultType="com.kingmed.immuno.entity.LabTestItem">
         select * from user ${ew.customSqlSegment}
     </select>
-    <select id="selectById"  resultType="com.example.entity.KmcsTask" parameterType="java.lang.String">
+    <select id="selectById" resultType="com.kingmed.immuno.entity.KmcsTask" parameterType="java.lang.String">
         select * from lab_test_item
         where 1=1
         <if test="id != null">
@@ -20,7 +20,7 @@
     </delete>
 
     <!-- 更新数据 -->
-<!--    <update id="updateLabTestItem" parameterType="com.example.entity.KmcsTask">-->
+<!--    <update id="updateLabTestItem" parameterType="KmcsTask">-->
 <!--        UPDATE lab_test_item-->
 <!--        SET id = #{id},  app_id = #{appId},barcode = #{barcode}, experiment_no = #{experimentNo}-->
 <!--        ,test_item_code = #{testItemCode},test_item_name = #{testItemName},big_org_code = #{bizOrgCode}-->
@@ -33,7 +33,7 @@
 <!--        </if>-->
 <!--    </update>-->
 
-<!--        <insert id="insertLabTestItem" parameterType="com.example.entity.KmcsTask">-->
+<!--        <insert id="insertLabTestItem" parameterType="KmcsTask">-->
 <!--            INSERT INTO lab_test_item(id,app_id,barcode,expeiment_no,test_item_code-->
 <!--            ,test_item_name,big_org_code,lab_id,status,version,created_time,-->
 <!--            updated_time,created_by,updated_by )-->

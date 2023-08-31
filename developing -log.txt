@@ -1,0 +1,4 @@
+Test配置路徑無法識別問題——
+1.check code -- 权限问题 访问空间名
+2.clean caches ——> restart IDE
+3.rebuild

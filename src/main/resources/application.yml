@@ -72,7 +72,7 @@ mybatis-plus:
   mapper-locations: classpath*:mapper/*.xml #扫描mapper下的所有xml文件
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  type-aliases-package: com.example.entity   #扫描实体类包/配置别名
+  type-aliases-package: com.kingmed.immuno.entity   #扫描实体类包/配置别名
 
 
 
