@@ -46,4 +46,7 @@ public interface KmcsTaskMapper  extends BaseMapper<KmcsTask>{
     KmcsTask selectByTestItemCode(@Param("TestItemCode") String TestItemCode, @Param("bizOrgCode")String bizOrgCode);
     @Select("select * from kmcs_task where status = 1 ")
     List<KmcsTask>  selectConvertedTasks();
+
+    @Select("SELECT DISTINCT biz_org_code FROM kmcs_task ")
+    List<String> selectALlByBizOrgCode();
 }

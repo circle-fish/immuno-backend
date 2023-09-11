@@ -48,4 +48,10 @@ public interface KmcsUserService{
      * @return 是否成功
      */
     boolean deleteById(Long id);
-}
+
+     /*
+      *登录并返回对应用户
+      */
+     KmcsUser LoginQuery(String username, String password,String bizOrgCode);
+
+ }

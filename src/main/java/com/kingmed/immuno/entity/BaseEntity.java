@@ -14,9 +14,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
+/**
+ * 通用字段 （包括ID）
+ * */
 public class BaseEntity implements Serializable {
 
-//    @Serial  ？？？
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(name = "",notes = "")

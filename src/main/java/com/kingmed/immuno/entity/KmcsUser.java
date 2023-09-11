@@ -18,20 +18,26 @@ import java.util.Date;
 @Data
 public class KmcsUser extends BaseEntity{
 
-    /**  */
-    @ApiModelProperty(name = "",notes = "")
+    private static final long serialVersionUID = 1L;
+
+    /**
+     *
+     * */
+    @ApiModelProperty(name = "用户名",notes = "")
     private String username ;
     /**  */
-    @ApiModelProperty(name = "",notes = "")
+    @ApiModelProperty(name = "密码",notes = "")
     private String password ;
     /**  */
-    @ApiModelProperty(name = "",notes = "")
+    @ApiModelProperty(name = "所属子公司",notes = "")
     private String bizOrgCode ;
-    /**  */
-    @ApiModelProperty(name = "",notes = "")
+    /**
+     * 令牌，用于登录验证
+     *  */
+    @ApiModelProperty(name = "令牌",notes = "")
     private String token ;
     /**  */
-    @ApiModelProperty(name = "",notes = "")
+    @ApiModelProperty(name = "有效期至",notes = "")
     private Date regTime ;
 
 }

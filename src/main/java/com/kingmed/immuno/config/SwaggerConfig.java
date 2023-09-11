@@ -35,8 +35,8 @@ public class SwaggerConfig {
                 .apiInfo(setApiInfo());
     }
     private ApiInfo setApiInfo() {
-        Contact contact = new Contact("ChenHuan", "https://lab.kingmed.com.cn/ai-based/immuno-backend", "zb-chenhuan@kingmed.com.cn");
-        ApiInfo info = new ApiInfo("immuno项目", "免疫荧光-流程优化项目文档地址", "v1.0",
+        Contact contact = new Contact("immuno-backend", "https://lab.kingmed.com.cn/ai-based/immuno-backend", "zb-chenhuan@kingmed.com.cn");
+        ApiInfo info = new ApiInfo("immuno项目", "免疫荧光-流程优化项目文档地址（Terms Of Service）、后端代码（与联系方式）", "v1.0",
                 "https://knq694.axshare.com/#id=fdq07n&p=%E4%BA%A7%E5%93%81%E4%BB%8B%E7%BB%8D&g=1", contact, "Apache 2.0", "", new ArrayList<VendorExtension>());
         return info;
     }

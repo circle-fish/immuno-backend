@@ -11,7 +11,7 @@ import lombok.Data;
  * @author : http://www.chiner.pro
  * @date : 2023-8-25
  */
-@ApiModel(value = "",description = "")
+@ApiModel(value = "",description = "根据KmcsTask转换成的实验任务实体类")
 @TableName("lab_task")
 @Data
 public class LabTask extends BaseEntity{

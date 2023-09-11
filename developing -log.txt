@@ -2,3 +2,23 @@ Test配置路徑無法識別問題——
 1.check code -- 权限问题 访问空间名
 2.clean caches ——> restart IDE
 3.rebuild
+
+9.4 log：
+登录模块开发 ——
+
+对茂源的python代码 KmcsService部分
+的getToken 和 UpdateToken部分实现
+考虑登录模块的设计 —— filter 还是 interceptor
+文档补充 / 注释统一格式
+
+9.5 problems:
+restemplate 访问 外部接口
+以及对webmvcconfig 拦截器作用和用法
+
+token访问kmcs接口问题-取到对应数据
+KMCS平台接口文档部分
+https://axqhqiqr7l0.feishu.cn/docx/DyS9dgmvgo0Sypxwuk3ccWqGnvc
+redis 使用
+
+
+

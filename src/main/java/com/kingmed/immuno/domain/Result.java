@@ -1,4 +1,4 @@
-package com.kingmed.immuno.entity;
+package com.kingmed.immuno.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;

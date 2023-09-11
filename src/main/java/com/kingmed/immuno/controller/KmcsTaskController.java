@@ -1,7 +1,7 @@
 package com.kingmed.immuno.controller;
 
 import com.kingmed.immuno.entity.KmcsTask;
-import com.kingmed.immuno.model.request.TaskQueryReq;
+import com.kingmed.immuno.model.request.TaskQueryRequest;
 import com.kingmed.immuno.service.KmcsTaskService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +36,7 @@ public class KmcsTaskController{
         return ResponseEntity.ok(kmcsTaskService.queryById(taskId));
     }
     @PostMapping("/getKmcsTask")
-     public ResponseEntity<KmcsTask> getKmcsTask(@RequestBody TaskQueryReq req)
+     public ResponseEntity<KmcsTask> getKmcsTask(@RequestBody TaskQueryRequest req)
     {
         System.out.println(req);
         return ResponseEntity.ok(kmcsTaskService.queryById(req.getTaskId()));

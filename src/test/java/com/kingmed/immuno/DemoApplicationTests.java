@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.kingmed.immuno.common.MapperHelpper;
 import com.kingmed.immuno.consumer.RQConsumer;
 import com.kingmed.immuno.entity.Device;
-import com.kingmed.immuno.entity.KmcsTask;
 import com.kingmed.immuno.entity.LabTask;
 import com.kingmed.immuno.mapper.DeviceMapper;
 import com.kingmed.immuno.mapper.KmcsTaskMapper;
@@ -92,25 +91,36 @@ public class DemoApplicationTests {
         System.out.println(res);
     }
     @Test
-    public void testconvertKmTaskToLabTask() throws IOException, NoSuchFieldException {
-        String bizOrgCode = "K010101001";
-        BaseResponse<ConversionResult> response = taskConversionService.convertKmTaskToLabTask(bizOrgCode);
-        System.out.println(response.getCode());
-        System.out.println(response.getMessage());
-        List<LabTask> labTasks = response.getData().getLabTasks();
-        System.out.println(labTasks.size());
-        for(int i = 0 ;i < labTasks.size() ; i ++)
-            System.out.println(JSON.toJSONString(labTasks.get(i)));
-    }
-    @Test
-    public void WithDrawlDBOperation()
-    {
-        for(KmcsTask kmcsTask :kmcsTaskMapper.selectConvertedTasks()) {
-            kmcsTask.setStatus(0);
-            kmcsTask.setLabTaskId(0);
-            kmcsTaskMapper.updateById(kmcsTask);
+    public void testConvertKmTaskToLabTask() throws IOException, NoSuchFieldException {
+        List<String> bizOrgCodes = kmcsTaskMapper.selectALlByBizOrgCode();
+        //默认先设为String 之后改为泛型--输列名获取参数值
+
+        System.out.println(bizOrgCodes);
+        for ( String bizOrgCode : bizOrgCodes)
+        {
+            BaseResponse<ConversionResult> response = taskConversionService.convertKmTaskToLabTask(bizOrgCode);
+            if(response.getData()==null) {
+                continue;
+            }
+            System.out.println(response.getCode());
+            System.out.println(response.getMessage());
+            List<LabTask> labTasks = response.getData().getLabTasks();
+            System.out.println(labTasks.size());
+            for (int i = 0; i < labTasks.size(); i++)
+                System.out.println(JSON.toJSONString(labTasks.get(i)));
         }
-        labTaskMapper.deleteAllTasks();
+        System.out.println("convertion completed .................................................");
     }
+//    java中不知为何数据库无反应
+//    @Test
+//    public void WithDrawlDBOperation()
+//    {
+//        for(KmcsTask kmcsTask :kmcsTaskMapper.selectConvertedTasks()) {
+//            kmcsTask.setStatus(0);
+//            kmcsTask.setLabTaskId(0);
+//            kmcsTaskMapper.updateById(kmcsTask);
+//        }
+//        labTaskMapper.deleteAllTasks();
+//    }
 
 }

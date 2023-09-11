@@ -13,4 +13,9 @@ public class  EnumManager{
          */
         inited,binded,allocated,testing,saved,submitted,unhandled;
     }
+
+    public enum Environment{
+        FT,PRD;
+    }
+
 }

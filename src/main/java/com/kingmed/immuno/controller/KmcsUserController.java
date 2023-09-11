@@ -1,6 +1,7 @@
 package com.kingmed.immuno.controller;
 
 import com.kingmed.immuno.entity.KmcsUser;
+import com.kingmed.immuno.model.request.UserQueryRequest;
 import com.kingmed.immuno.service.KmcsUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -93,5 +94,14 @@ public class KmcsUserController{
     @DeleteMapping
     public ResponseEntity<Boolean> deleteById(Long id){
         return ResponseEntity.ok(kmcsUserService.deleteById(id));
+    }
+
+    @ApiOperation("用户登录验证")
+    @PostMapping("/loginUser")
+    public ResponseEntity<KmcsUser> LoginQuery(UserQueryRequest userQueryRequest) {
+        String username = userQueryRequest.getUsername();
+        String password = userQueryRequest.getPassword();
+        String bizOrgCode = userQueryRequest.getBizOrgCode();
+        return ResponseEntity.ok(kmcsUserService.LoginQuery(username,password,bizOrgCode));
     }
 }

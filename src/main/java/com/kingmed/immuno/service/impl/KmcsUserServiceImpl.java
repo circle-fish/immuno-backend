@@ -6,11 +6,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kingmed.immuno.entity.KmcsUser;
+import com.kingmed.immuno.exception.ServiceException;
 import com.kingmed.immuno.mapper.KmcsUserMapper;
 import com.kingmed.immuno.service.KmcsUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
- /**
+
+/**
  * ;(kmcs_user)表服务实现类
  * @author : http://www.chiner.pro
  * @date : 2023-8-11
@@ -19,9 +21,10 @@ import org.springframework.stereotype.Service;
 public class KmcsUserServiceImpl implements KmcsUserService {
     @Autowired
     private KmcsUserMapper kmcsUserMapper;
-    
+    @Autowired
+    private KmcsServiceImpl kmcsService;
     /** 
-     * 通过ID查询单条数据 
+     * 通过ID查询kmcsUser
      *
      * @param id 主键
      * @return 实例对象
@@ -116,4 +119,28 @@ public class KmcsUserServiceImpl implements KmcsUserService {
         int total = kmcsUserMapper.deleteById(id);
         return total > 0;
     }
-}
+
+     /**
+      * 登录验证
+      *
+      * @param username 账号 password 密码
+      * @return boolean 验证结果
+      */
+     @Override
+     public KmcsUser LoginQuery(String username, String password,String bizOrgCode) {
+//         Map<> ??? selectByMap 方法代替
+         KmcsUser kmcsUser = kmcsUserMapper.selectByNameAndPwd(username, password, bizOrgCode);
+         if(kmcsUser == null) {
+             throw new ServiceException("在数据库中不存在用户名为"+username+"的用户！");
+         }
+         String token = kmcsService.getTokenFromKmcs(kmcsUser);
+
+         if (token != null) {
+             kmcsService.updateToken(kmcsUser);
+             return kmcsUser;
+         } else {
+             throw new ServiceException("未获取到对应用户的token 用户名: "+username);
+         }
+     }
+
+ }

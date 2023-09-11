@@ -18,7 +18,7 @@ import java.util.Date;
  * @author : http://www.chiner.pro
  * @date : 2023-8-25
  */
-@ApiModel(value = "",description = "")
+@ApiModel(value = "",description = "根据KmAppInfo转换成的Kmcs任务")
 @TableName("kmcs_task")
 @Data
 public class KmcsTask implements Serializable {

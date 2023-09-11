@@ -125,10 +125,11 @@ public class TaskConversionServiceImpl implements TaskConversionService {
                 .stream()
                 .map(x->x.getTestItemCode())
                 .collect(Collectors.toList());
-
+//        严格转换需要未转换的KmTask的所有actualCodes 是需要转换的needCodes的父集
         if (conversionMode == EnumManager.LabTestItemMode.STRICT && actualCodes.containsAll(needCodes)) {
             return true;
         }
+//        宽松转换两者只要有交集即可
         if (conversionMode == EnumManager.LabTestItemMode.LOOSE && actualCodes.retainAll(needCodes)) {
             return true;
         }
@@ -270,7 +271,7 @@ public class TaskConversionServiceImpl implements TaskConversionService {
         for (int i = 0 ; i < conversionResult.getKmcsTasks().size() ; i ++ ) {
             LabTask labTask = conversionResult.getLabTasks().get(i);
             KmcsTask kmcsTask = conversionResult.getKmcsTasks().get(i);
-//？？？是否按顺序一一对应 / 在上面的convert函数中做updated值无法传回来
+            //？？？是否按顺序一一对应 / 在上面的convert函数中做updated值无法传回来
             kmFactory.updatedWhenConverted(labTask,kmcsTask);
             mapperHelpper.upsert(kmcsTask,kmcsTaskMapper);
         }
