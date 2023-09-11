@@ -28,7 +28,7 @@ public class HeaderInterceptor implements AsyncHandlerInterceptor {
 
         JwtUtil jwtUtil = SpringUtils.getBean(JwtUtil.class);
         String token = ServletUtils.getRequest().getHeader(CommonConstants.X_ACCESS_TOKEN);
-        // 无token时逻辑
+        // 无token时逻辑 ----
         if (StringUtils.isNotEmpty(token)) {
             KmcsUser loginUser = jwtUtil.getKmcsUserFromToken(token);
             if (StringUtils.isNotNull(loginUser)) {
