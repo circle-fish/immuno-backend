@@ -1,11 +1,14 @@
 package com.kingmed.immuno.entity;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.rmi.server.UID;
 import java.util.Date;
 
 /**
@@ -19,9 +22,8 @@ import java.util.Date;
 public class KmcsUser extends BaseEntity{
 
     private static final long serialVersionUID = 1L;
-
     /**
-     *
+     * 用户名
      * */
     @ApiModelProperty(name = "用户名",notes = "")
     private String username ;

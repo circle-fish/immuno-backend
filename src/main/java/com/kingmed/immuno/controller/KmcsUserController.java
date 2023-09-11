@@ -98,10 +98,9 @@ public class KmcsUserController{
 
     @ApiOperation("用户登录验证")
     @PostMapping("/loginUser")
-    public ResponseEntity<KmcsUser> LoginQuery(UserQueryRequest userQueryRequest) {
-        String username = userQueryRequest.getUsername();
-        String password = userQueryRequest.getPassword();
-        String bizOrgCode = userQueryRequest.getBizOrgCode();
-        return ResponseEntity.ok(kmcsUserService.LoginQuery(username,password,bizOrgCode));
+    public ResponseEntity<KmcsUser> LoginQuery(UserQueryRequest userQueryRequest){
+
+        return ResponseEntity.ok(kmcsUserService.LoginQuery(userQueryRequest));
+
     }
 }

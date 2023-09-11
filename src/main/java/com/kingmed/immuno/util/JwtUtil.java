@@ -52,22 +52,24 @@ public class JwtUtil {
 
     /**
      * 生成token
+     * 根据user 的id 进行token 的生成
      *
      * @param user KmcsUser
      * @return 加密的token
      */
-//    public String createToken(KmcsUser user) {
-//        String uuid = UUID.randomUUID().toString();
-//        user.setUuid(uuid);
-//        refreshToken(user);
-//
-//        // Jwt存储信息
-//        Map<String, Object> claims = new HashMap<>();
-//        claims.put("user_key", uuid);
-//        Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
-//        // 附带username信息
-//        return Jwts.builder().setClaims(claims).setExpiration(date).signWith(SignatureAlgorithm.HS512, secret).compact();
-//    }
+    public String createToken(KmcsUser user) {
+        String uuid = user.getId().toString();
+
+        refreshToken(user);
+
+        // Jwt存储信息 -- ??? 设计需要仿照hrg来做uuid吗  或者根据username组合password之类的方法
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("user_key", uuid);
+        Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
+        // 附带username信息
+        return Jwts.builder().setClaims(claims).setExpiration(date).signWith(SignatureAlgorithm.HS512, secret).compact();
+    }
 
     public String createTestToken(KmcsUser user) {
         // Jwt存储信息
@@ -86,9 +88,15 @@ public class JwtUtil {
 
         Date regDate = new Date(System.currentTimeMillis() + EXPIRE_TIME);
         user.setRegTime(regDate);
-        // 根据uuid将loginUser缓存 ---> 改成token ???
+
+        /*
+        根据uuid将loginUser缓存 ---> 改成token ???
+        存入redis缓存(开发测试阶段暂不考虑) 仅更新日期
+
         String userKey = getTokenKey(user.getToken());
         redisUtil.setCacheObject(userKey, user, EXPIRE_TIME, TimeUnit.MILLISECONDS);
+
+        */
     }
 
     /**

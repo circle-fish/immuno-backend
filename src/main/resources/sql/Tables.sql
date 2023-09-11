@@ -171,4 +171,19 @@ CREATE TABLE lab_test_item_rel(
     `lab_test_item_code` VARCHAR(64)    COMMENT '该KmcsTask对应的LabTestItem项目编号' ,
     PRIMARY KEY (id)
 )  COMMENT = '';
+DROP TABLE IF EXISTS kmcs_user;
+CREATE TABLE kmcs_user(
+                          `id` INT(32) NOT NULL AUTO_INCREMENT  COMMENT '' ,
+                          `username` VARCHAR(32)    COMMENT '用户名' ,
+                          `password` VARCHAR(32)    COMMENT '密码' ,
+                          `biz_org_code` VARCHAR(32)    COMMENT '子公司代码' ,
+                          `token` VARCHAR(255)    COMMENT '令牌' ,
+                          `reg_time` DATETIME    COMMENT '有效期至' ,
+                          `version` INT    COMMENT '' ,
+                          `created_time` DATETIME    COMMENT '' ,
+                          `updated_time` DATETIME    COMMENT '' ,
+                          `created_by` VARCHAR(32)    COMMENT '' ,
+                          `updated_by` VARCHAR(32)    COMMENT '' ,
+                          PRIMARY KEY (id)
+)  COMMENT = '';
 

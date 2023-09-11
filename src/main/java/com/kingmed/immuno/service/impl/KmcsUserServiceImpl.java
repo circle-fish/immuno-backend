@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kingmed.immuno.entity.KmcsUser;
 import com.kingmed.immuno.exception.ServiceException;
 import com.kingmed.immuno.mapper.KmcsUserMapper;
+import com.kingmed.immuno.model.request.UserQueryRequest;
 import com.kingmed.immuno.service.KmcsUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,8 @@ public class KmcsUserServiceImpl implements KmcsUserService {
     private KmcsUserMapper kmcsUserMapper;
     @Autowired
     private KmcsServiceImpl kmcsService;
-    /** 
+
+    /**
      * 通过ID查询kmcsUser
      *
      * @param id 主键
@@ -123,20 +125,26 @@ public class KmcsUserServiceImpl implements KmcsUserService {
      /**
       * 登录验证
       *
-      * @param username 账号 password 密码
+      * @param userQueryRequest 用户查询请求
       * @return boolean 验证结果
       */
      @Override
-     public KmcsUser LoginQuery(String username, String password,String bizOrgCode) {
+     public KmcsUser LoginQuery(UserQueryRequest userQueryRequest) {
 //         Map<> ??? selectByMap 方法代替
-         KmcsUser kmcsUser = kmcsUserMapper.selectByNameAndPwd(username, password, bizOrgCode);
+
+         KmcsUser kmcsUser = kmcsUserMapper.selectByNameAndPwd(userQueryRequest.getUsername(),
+                 userQueryRequest.getPassword(),
+                 userQueryRequest.getBizOrgCode()
+         );
+
+         String username = userQueryRequest.getUsername();
          if(kmcsUser == null) {
              throw new ServiceException("在数据库中不存在用户名为"+username+"的用户！");
          }
-         String token = kmcsService.getTokenFromKmcs(kmcsUser);
+         //检查用户有效期并设置token
+         String token = kmcsService.updateToken(kmcsUser);
 
-         if (token != null) {
-             kmcsService.updateToken(kmcsUser);
+         if ( token != null) {
              return kmcsUser;
          } else {
              throw new ServiceException("未获取到对应用户的token 用户名: "+username);

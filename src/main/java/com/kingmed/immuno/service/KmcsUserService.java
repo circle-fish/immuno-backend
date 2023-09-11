@@ -2,8 +2,9 @@ package com.kingmed.immuno.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kingmed.immuno.entity.KmcsUser;
+import com.kingmed.immuno.model.request.UserQueryRequest;
 
- /**
+/**
  * ;(kmcs_user)表服务接口
  * @author : http://www.chiner.pro
  * @date : 2023-8-11
@@ -52,6 +53,5 @@ public interface KmcsUserService{
      /*
       *登录并返回对应用户
       */
-     KmcsUser LoginQuery(String username, String password,String bizOrgCode);
-
- }
+    KmcsUser LoginQuery(UserQueryRequest userQueryRequest);
+}

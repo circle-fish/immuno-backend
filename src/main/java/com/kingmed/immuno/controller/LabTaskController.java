@@ -31,8 +31,8 @@ public class LabTaskController{
      * @return 实例对象
      */
     @ApiOperation("通过ID查询单条数据")
-    @GetMapping("{id}")
-    public ResponseEntity<LabTask> queryById(Integer id){
+    @GetMapping("getLabTaskById/{id}")
+    public ResponseEntity<LabTask> queryById(@PathVariable("id") Integer id){
         return ResponseEntity.ok(labTaskService.queryById(id));
     }
     
@@ -45,29 +45,39 @@ public class LabTaskController{
      */
     @ApiOperation("分页查询")
     @GetMapping
-    public ResponseEntity<PageImpl<LabTask>> paginQuery(LabTask labTask, PageRequest pageRequest){
+    public ResponseEntity<PageImpl<LabTask>> paginsQuery(LabTask labTask, PageRequest pageRequest){
+
         //1.分页参数
         long current = pageRequest.getPageNumber();
         long size = pageRequest.getPageSize();
         //2.分页查询
-        /*把Mybatis的分页对象做封装转换，MP的分页对象上有一些SQL敏感信息，还是通过spring的分页模型来封装数据吧*/
+        /*
+        *把Mybatis的分页对象做封装转换，MP的分页对象上有一些SQL敏感信息，还是通过spring的分页模型来封装数据吧
+        */
+
         com.baomidou.mybatisplus.extension.plugins.pagination.Page<LabTask> pageResult = labTaskService.paginQuery(labTask, current,size);
         //3. 分页结果组装
         List<LabTask> dataList = pageResult.getRecords();
         long total = pageResult.getTotal();
+
         PageImpl<LabTask> retPage = new PageImpl<LabTask>(dataList,pageRequest,total);
+
         return ResponseEntity.ok(retPage);
+
     }
     
     /** 
      * 新增数据
      *
+     * @RequestBody 的使用 以及url路径设置 ？？？
+     * 还有是否需要定义与前端交互的参照model/request自定义类型更改
+     *
      * @param labTask 实例对象
      * @return 实例对象
      */
     @ApiOperation("新增数据")
-    @PostMapping
-    public ResponseEntity<LabTask> add(LabTask labTask){
+    @PostMapping("/addLabTask")
+    public ResponseEntity<LabTask> add(@RequestBody LabTask labTask){
         return ResponseEntity.ok(labTaskService.insert(labTask));
     }
     

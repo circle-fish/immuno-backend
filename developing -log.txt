@@ -20,5 +20,12 @@ KMCS平台接口文档部分
 https://axqhqiqr7l0.feishu.cn/docx/DyS9dgmvgo0Sypxwuk3ccWqGnvc
 redis 使用
 
+9.11 testing problmes:
 
+desc：
+kmcs_user 继承自baseEntity 但是现有数据库生成没有version等字段 -
+solu:
+PDManer修改数据库-进行通用字段添加(finished) 并添加到sql文件夹下
+
+not null 问题 数据字典如何设置默认值空字符串
 

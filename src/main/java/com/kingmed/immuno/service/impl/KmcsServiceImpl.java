@@ -3,27 +3,31 @@ package com.kingmed.immuno.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.kingmed.immuno.common.MapperHelpper;
 import com.kingmed.immuno.domain.TokenRequest;
 import com.kingmed.immuno.entity.KmcsUser;
 import com.kingmed.immuno.exception.ServiceException;
 import com.kingmed.immuno.mapper.KmcsUserMapper;
 import com.kingmed.immuno.service.KmcsService;
+import com.kingmed.immuno.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
-
+@Service
 public class KmcsServiceImpl implements KmcsService {
 
     /*
      *对应子公司的用户信息缓存
      */
-    private Map<String,KmcsUser> userMap;
+    private Map<String,KmcsUser> userMap = new HashMap<>();
     /*
      *访问外部接口的工具类
      */
@@ -32,6 +36,10 @@ public class KmcsServiceImpl implements KmcsService {
 
     @Autowired
     private KmcsUserMapper kmcsUserMapper;
+    @Autowired
+    private JwtUtil jwtUtil;
+    @Autowired
+    private MapperHelpper mapperHelpper;
     /*
      *获取Token字符串的基地址
      */
@@ -99,30 +107,23 @@ public class KmcsServiceImpl implements KmcsService {
     public String updateToken(KmcsUser kmcsUser) {
 
 
-        String token = getTokenFromKmcs(kmcsUser);
-
+//         String token = kmcsService.getTokenFromKmcs(kmcsUser);-先用自生成的testtoken ???
+        String token = jwtUtil.createToken(kmcsUser);
         String bizOrgCode = kmcsUser.getBizOrgCode();
         Date regTime = kmcsUser.getRegTime();
-
         /*
         * 从数据库中查找对应子公司的User并判断是否过期
          */
-        try {
-            QueryWrapper<KmcsUser> kmcsUserWrapper = new QueryWrapper<KmcsUser>();
-            kmcsUserWrapper.eq("biz_org_code",bizOrgCode);
-            kmcsUser = kmcsUserMapper.selectOne(kmcsUserWrapper);
+            //loginQuery中已做数据库查询不需要在查询
+//            QueryWrapper<KmcsUser> kmcsUserWrapper = new QueryWrapper<KmcsUser>();
+//            kmcsUserWrapper.eq("biz_org_code",bizOrgCode);
+//            kmcsUser = kmcsUserMapper.selectOne(kmcsUserWrapper);
             //??filter().first选取到的第一位如何排序的,
             // 形参按值传递，对副本kmcsUser修改
-            if(kmcsUser == null){
-                throw new ServiceException("在数据表中没有查询到子公司为" + bizOrgCode + "的用户！");
-            }
-            kmcsUser.setToken(token);
-            kmcsUser.setRegTime(regTime);
-            kmcsUserMapper.updateById(kmcsUser);
+        kmcsUser.setToken(token);
+        kmcsUser.setRegTime(regTime);
 
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        mapperHelpper.upsert(kmcsUser,kmcsUserMapper);
         userMap.put(bizOrgCode,kmcsUser);
 
         return token;
