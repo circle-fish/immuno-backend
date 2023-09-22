@@ -2,12 +2,19 @@ package com.kingmed.immuno.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kingmed.immuno.entity.LabOrder;
+import com.kingmed.immuno.entity.LabTask;
+import com.kingmed.immuno.model.dataModel.LabUser;
+
+import com.kingmed.immuno.model.dataModel.dto.LabOrderTaskDO;
+
+import java.util.List;
 
 /**
  * ;(lab_order)表服务接口
  * @author : http://www.chiner.pro
  * @date : 2023-8-11
  */
+
 public interface LabOrderService{
     
     /** 
@@ -48,4 +55,25 @@ public interface LabOrderService{
      * @return 是否成功
      */
     boolean deleteById(Long id);
+    /**
+     * 获取到今天的lab_order,如果没有则创建一个
+     * @param labUser
+     * @return 今日任务批次
+     */
+    LabOrder checkTodayLabOrder(LabUser labUser);
+    /**
+     * 获取属于当前lab_order的所有的lab_task, 并把所有尚未处理的LabTask全部绑定到当前的lab_order
+     *并返回被绑定后的LabTasks
+     * @param labOrder
+     * @param labUser
+     * @return 绑定到批次的任务列表
+     */
+    List<LabTask> bindLabTaskToLabOrder(LabOrder labOrder, LabUser labUser);
+    /**
+     * 获取到今天的lab_order,如果没有则创建一个，并且根据创建情况对其进行LabTask进行绑定
+     *
+     * @param labUser
+     * @return
+     */
+    LabOrderTaskDO getTodayLabOrder(LabUser labUser);
 }

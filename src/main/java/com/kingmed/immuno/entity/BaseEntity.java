@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 
+import com.kingmed.immuno.util.DateTimeUtil;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -41,5 +42,6 @@ public class BaseEntity implements Serializable {
     /**  */
     @TableField(value = "updated_by",fill = FieldFill.INSERT_UPDATE)
     private String updatedBy ;
+
 
 }

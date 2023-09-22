@@ -4,14 +4,14 @@ import java.util.Calendar;
 import java.util.Date;
 
 /*
-*统计当天批次
+ *统计当天批次
  */
 public class DateTimeUtil {
 
     /*
-    *获取当天的0点整时刻
+     *获取当天的0点整时刻
      */
-    public Date getStNow() {
+    public static Date getStNow() {
         // 创建一个Calendar对象
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
@@ -24,10 +24,11 @@ public class DateTimeUtil {
 
         return calendar.getTime();
     }
+
     /*
      *获取当天的24点整时刻
      */
-    public Date getEdNow() {
+    public static Date getEdNow() {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
@@ -38,5 +39,15 @@ public class DateTimeUtil {
         calendar.set(Calendar.MILLISECOND, 999); // 将毫秒数设置为999，表示当天的最后一毫秒
 
         return calendar.getTime();
+    }
+    /**
+     * 获取到当前时间精确度到秒的时间
+     */
+    public static Date getNow(){
+        long currentTimeMillis = System.currentTimeMillis();
+        long currentTimeSeconds = currentTimeMillis / 1000;
+
+        Date currentDate = new Date(currentTimeSeconds * 1000);
+        return currentDate;
     }
 }

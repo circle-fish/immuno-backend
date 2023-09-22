@@ -141,9 +141,12 @@ public class KmcsUserServiceImpl implements KmcsUserService {
          if(kmcsUser == null) {
              throw new ServiceException("在数据库中不存在用户名为"+username+"的用户！");
          }
-         //检查用户有效期并设置token
-         String token = kmcsService.updateToken(kmcsUser);
-
+//         //检查用户有效期并设置token
+         String token = kmcsService.getToken(userQueryRequest.getBizOrgCode());
+         /*
+         * 设计上先从一个子公司去取缓存用户所使用的token ???
+          */
+//         String accountId = kmcsService.getAccountIdFromKmcs(kmcsUser); ???接口返回登录失败相关函数
          if ( token != null) {
              return kmcsUser;
          } else {

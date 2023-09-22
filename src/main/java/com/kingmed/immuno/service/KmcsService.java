@@ -18,4 +18,7 @@ public interface KmcsService {
     public String updateToken(KmcsUser kmcsUser);
 
 
+    String getAccountIdFromKmcs(KmcsUser kmcsUser);
+
+    String getOrgCodeFromKmcs(KmcsUser kmcsUser);
 }

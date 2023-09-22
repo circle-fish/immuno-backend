@@ -3,7 +3,9 @@ package com.kingmed.immuno.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kingmed.immuno.entity.Device;
 
- /**
+import java.util.List;
+
+/**
  * ;(device)表服务接口
  * @author : http://www.chiner.pro
  * @date : 2023-8-11
@@ -48,4 +50,6 @@ public interface DeviceService {
      * @return 是否成功
      */
     boolean deleteById(Long id);
+
+    List<Device> getDeviceInfo(String bizOrgCode);
 }

@@ -2,6 +2,7 @@ package com.kingmed.immuno.entity;
 
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.kingmed.immuno.model.dataModel.dto.SampleBase;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -14,7 +15,7 @@ import lombok.Data;
 @ApiModel(value = "",description = "根据KmcsTask转换成的实验任务实体类")
 @TableName("lab_task")
 @Data
-public class LabTask extends BaseEntity{
+public class LabTask extends SampleBase {
     
     /** 任务状态:
      * inited: 初始状态, 从KmTask转换后产生的初始状态
@@ -36,9 +37,7 @@ public class LabTask extends BaseEntity{
     /** 实验号 */
     @ApiModelProperty(name = "",notes = "实验号")
     private String experimentNo ;
-    /** 任务类型：   0: 常规任务   1: 质控任务 */
-    @ApiModelProperty(name = "",notes = "任务类型：   0: 常规任务   1: 质控任务")
-    private Integer taskType ;
+
     /** 结果一般是字符串,有些项目可能是字符串形式,由labTestItemCode决定 */
     @ApiModelProperty(name = "",notes = "结果一般是字符串,有些项目可能是字符串形式,由labTestItemCode决定")
     private String result ;
@@ -64,14 +63,8 @@ public class LabTask extends BaseEntity{
     /** 设备名称, 在任务分配时确定, 初始值为"" */
     @ApiModelProperty(name = "",notes = "设备名称, 在任务分配时确定, 初始值为空")
     private String deviceName ;
-    /** 设备位置, 在任务分配时确定, 初始值为"" */
-    @ApiModelProperty(name = "",notes = "设备位置, 在任务分配时确定, 初始值为空")
-    private String devicePosition ;
     /** 试剂类型, 在转换时由项目决定 */
     @ApiModelProperty(name = "",notes = "试剂类型, 在转换时由项目决定")
     private Integer reagentType ;
-    /** 试剂批号, 在任务分配时确定 */
-    @ApiModelProperty(name = "",notes = "试剂批号, 在任务分配时确定")
-    private String reagentLot ;
 
 }

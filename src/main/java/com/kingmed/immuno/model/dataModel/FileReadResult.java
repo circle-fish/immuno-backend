@@ -13,6 +13,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class FileReadResult {
-    List<LabTestItem> labTestItems;
-    List<LabTestItemRel> labTestItemRels;
+    List<LabTestItem> labTestItemList;
+    List<LabTestItemRel> labTestItemRelList;
 }

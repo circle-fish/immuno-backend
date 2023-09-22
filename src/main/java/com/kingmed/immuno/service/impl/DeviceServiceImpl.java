@@ -2,6 +2,7 @@ package com.kingmed.immuno.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -10,6 +11,8 @@ import com.kingmed.immuno.mapper.DeviceMapper;
 import com.kingmed.immuno.service.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class DeviceServiceImpl implements DeviceService {
@@ -123,5 +126,17 @@ public class DeviceServiceImpl implements DeviceService {
     public boolean deleteById(Long id){
         int total = deviceMapper.deleteById(id);
         return total > 0;
+    }
+
+    /**
+     * 获取子公司下的所有设备
+     * @param bizOrgCode
+     * @return
+     */
+    @Override
+    public List<Device> getDeviceInfo(String bizOrgCode) {
+        QueryWrapper<Device> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("biz_org_code",bizOrgCode);
+        return deviceMapper.selectList(queryWrapper);
     }
 }

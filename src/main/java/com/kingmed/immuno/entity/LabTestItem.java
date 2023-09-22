@@ -24,7 +24,9 @@ public class LabTestItem extends BaseEntity{
     @ApiModelProperty(name = "",notes = "")
     private String code ;
     /** 转换模式：LOOSE 宽松转换；STRICT 严格转换 */
-    @ApiModelProperty(name = "",notes = "转换模式：LOOSE 宽松转换—— 实际的项目代码集合与需要的项目代码集合有交集即可 ; STRICT 严格转换—— 实际的项目代码集合需要是需要的项目代码集合的父集")
+    @ApiModelProperty(name = "",notes = "转换模式：" +
+            "LOOSE 宽松转换—— 实际的项目代码集合与需要的项目代码集合有交集即可 ; " +
+            "STRICT 严格转换—— 实际的项目代码集合需要是需要的项目代码集合的父集  ")
     private EnumManager.LabTestItemMode conversionMode ;
     /** 子公司代码 */
     @ApiModelProperty(name = "",notes = "子公司代码")

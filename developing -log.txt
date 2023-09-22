@@ -29,3 +29,103 @@ PDManer修改数据库-进行通用字段添加(finished) 并添加到sql文件�
 
 not null 问题 数据字典如何设置默认值空字符串
 
+9.12 design
+
+1.得到accountId 以后拿哪一个，以及查询岗位后得到的orgCode如何区分，在后续业务流程如何使用,有何区别？
+    review: 暂定拿第一个 --- 先存储下后面kmcs平台可能调用
+2.accountId与token是否都需要，区别?
+    如果只需要accountId  kmcsuser.setToken(accountId) 可否？
+    冗余设计，先存着
+3.accountId 对应很多orgCode(暂定权限字段) 如何处理？
+    拿第一个
+4.DatetimeUtil中设置一天的0点与24点的方法是否可行？
+    到毫秒级别
+5.token是一个子公司用户的用户们公用的？
+    再看
+9.13 testing
+
+ Expected one result (or null) to be returned by selectOne(), but found: 3
+ selectOne的bug 在testLoginQuery处
+ 记得处理成选第一个
+
+ 9.14 review
+
+    main task（紧急):
+    概要设计: uml 调用类名 ，重要接口 ， 方法 ，和顺序 ，注意事项等整理
+
+    一个模块到一个，设计交付再下一个
+
+ 9.15
+
+ done :
+ 简单概要设计 + 补全任务处理模块代码
+
+ left:
+ 任务分配模块的设计文档 需要做好
+ heliosAllocationUtils 工具类补全，添加任务到页面的功能
+ 以及基础数据结构设计上的确认 VirtualMachine等
+
+ problems：
+ 安装docker环境，清理空间, 设计问题，可用的快速开发工具
+ 使用gpt快速生成java版本的代码加快编码速度
+
+ 想好测试逻辑
+
+ 9.18
+
+ problems:
+     1.virtualSlide.addSample遇到java无法多重继承问题，但是可能要添加
+     LabTask和HeliosLabTaskWithPosition两种结构,且由于LabTask已经继承了BaseEntity
+     无法继承SampleBase
+     2.LabTask stauts用String而不是数字表示enummanager中暂时不需要设置字段映射值
+
+     3.类型冲突 , 考虑LabTaskDO 与 LabTask的互转方式
+     4.config ormMode 作用
+
+ solutions:
+     1.使SampleBase继承BaseEntity(可能造成冗余字段)
+     然后直接让LabTask继承SampleBase而不是BaseEntity
+     ps : SampleBase 减去id和version(BaseEntity已存在的) 和 reagenDetailId
+     HeilosReagentDetail已被最初设计中删除，细节信息由HeliosReagent取代
+
+     2.参考具体结构
+
+     3.在工具类/工厂类中进行转换或者在LabTaskDO类中设置构造参数
+     快速但可能异常 - 强制类型把LabTask转换为LabTaskDO子类
+
+     4. python中orm框架配置，springboot中使用mybatis即可不需要考虑了，对应的一些DO类如LabOrderDO也不需要
+
+9.19
+
+    problems:
+        1.检测批次创建设计与实现
+        2.???注释整理
+        3.IntelliJ IDEA生成 Serializable 序列化 UID 的快捷键，
+        根据需要的在特定类里生成这些UID
+        4.有关SampleBase继承的强制转换隐患问题
+        5.获取检测批次getTodayLabOrder中with_for_update相关加锁问题
+        是否加mapper.lock(id) 等方法来实现，或者暂时不考虑
+    solutions:
+
+    Done:
+        任务分配的基础逻辑函数实现
+
+9.20
+    problems:
+        1.如何加锁能满足安全和负载均衡???乐观锁机制配置或getTodayLabOrder直接加悲观锁，
+        事务提交或者回滚是否需要手动干预？
+        2.概要/详细设计的图、文字说明的模板，
+        代码架构说明、自动生成uml类图、流程图、接口说明
+        还需要？
+    solutions:
+        1.last("for update") 在wrapper后补充语句 ， 至于提交和回滚交给@Transactional自动管理
+        2.原来基础上补充一个数据流图，单人开发不用太看重文档的详细度,注重易读性和可复现性，作为代码的简介。
+9.21
+    problems:
+        1.device、labOrder等的原始数据参考
+        2.打印清单的格式问题，设计上实现功能梳理
+        3.分配逻辑注意点的实现检查
+
+9.22
+    problems：
+        1.addQCToSlide QCNAMES是常量数组，但是numQc取决于试剂，遍历中可能出现数组下标越界问题

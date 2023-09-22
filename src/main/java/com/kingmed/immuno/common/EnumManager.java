@@ -1,5 +1,8 @@
 package com.kingmed.immuno.common;
 
+import com.kingmed.immuno.entity.LabTask;
+import io.swagger.models.auth.In;
+
 public class  EnumManager{
     public enum LabTestItemMode {
         /**
@@ -11,11 +14,93 @@ public class  EnumManager{
         /**
          * 转换模式
          */
-        inited,binded,allocated,testing,saved,submitted,unhandled;
+        inited(0),binded(1),allocated(2),testing(3),saved(4),submitted(5),unhandled(-1);
+        private Integer value;
+        LabTaskStatus(Integer value){
+            this.value = value;
+        }
+        public Integer getValue() {
+            return value;
+        }
     }
 
     public enum Environment{
         FT,PRD;
     }
+
+    /**
+     * pc  阳性质控
+     * nc 阴性质控
+     */
+    public enum QC_NAMES{
+        pc,nc;
+    }
+    /**
+     * normal 普通任务 - 0
+     * qc 质控任务 - 1
+     */
+    public enum LabTaskType{
+        normal(0),
+        qc(1);
+
+        private Integer value;
+        LabTaskType(Integer value){
+            this.value = value;
+        }
+
+        public Integer getValue() {
+            return value;
+        }
+    }
+    /**
+     *设备类型
+     */
+    public enum DeviceType{
+        helios(0),blot(1);
+        private Integer value;
+        DeviceType(Integer value){
+            this.value = value;
+        }
+        public Integer getValue() {
+            return value;
+        }
+    }
+    /**
+     *设备状态
+     */
+    public enum DeviceStatus{
+        usable,unusable;
+    }
+    /**
+     *试剂类型
+     */
+    public enum ReagentType{
+        helios(0),blot(1);
+        private Integer value;
+        ReagentType(Integer value){
+            this.value = value;
+        }
+        public Integer getValue() {
+            return value;
+        }
+    }
+    /**
+     * 保存结果类型
+     * plain 普通的结果类型
+     * structured 结构化的结果类型
+     */
+    public enum LabTaskResulType{
+        plain(0),
+        structured(1);
+
+        private Integer value;
+        LabTaskResulType(Integer value){
+            this.value = value;
+        }
+        public Integer getValue() {
+            return value;
+        }
+    }
+
 
 }

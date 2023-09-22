@@ -2,10 +2,11 @@ package com.kingmed.immuno.service.factory;
 
 import com.kingmed.immuno.entity.KmcsTask;
 import com.kingmed.immuno.entity.LabTestItem;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Component
 public class LabTestItemFactory {
 
     public List<LabTestItem> convertToLabTestItemList( List<KmcsTask> kmTasks)

@@ -1,5 +1,9 @@
 package com.kingmed.immuno.common;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public interface CommonConstants {
 
     String X_ACCESS_TOKEN = "X-Access-Token";
@@ -27,4 +31,5 @@ public interface CommonConstants {
     String UPLOAD_CHANNEL = "immuno_sys";
 
 
+    List<String> QC_NAMES = Arrays.asList("qc", "nc");
 }

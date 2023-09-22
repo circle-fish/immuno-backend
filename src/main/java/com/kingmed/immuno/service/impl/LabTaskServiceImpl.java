@@ -1,16 +1,24 @@
 package com.kingmed.immuno.service.impl;
 
+import cn.hutool.core.lang.Tuple;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.kingmed.immuno.common.EnumManager;
 import com.kingmed.immuno.entity.LabTask;
 import com.kingmed.immuno.mapper.LabTaskMapper;
+import com.kingmed.immuno.model.dataModel.LabUser;
 import com.kingmed.immuno.service.LabTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
- /**
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
  * ;(lab_task)表服务实现类
  * @author : http://www.chiner.pro
  * @date : 2023-8-11
@@ -19,6 +27,8 @@ import org.springframework.stereotype.Service;
 public class LabTaskServiceImpl implements LabTaskService{
     @Autowired
     private LabTaskMapper labTaskMapper;
+    @Autowired
+    private LabOrderServiceImpl labOrderService;
     
     /** 
      * 通过ID查询单条数据 
@@ -157,5 +167,57 @@ public class LabTaskServiceImpl implements LabTaskService{
     public boolean deleteById(Long id){
         int total = labTaskMapper.deleteById(id);
         return total > 0;
+    }
+
+     /**
+      * 为界面初始化和刷新提供数据
+      * 返回任务状态为inited和unhandled的LabTasks
+      *
+      * @return 初始化和未处理的任务列表的元组
+      */
+     @Override
+     public Tuple initTasksForInterFace() {
+         QueryWrapper<LabTask> initQueryWrapper = new QueryWrapper<>();
+         initQueryWrapper.eq("status", EnumManager.LabTaskStatus.inited.toString());
+         QueryWrapper<LabTask> unhandledQueryWrapper = new QueryWrapper<>();
+         unhandledQueryWrapper.eq("status",EnumManager.LabTaskStatus.unhandled.toString());
+
+         List<LabTask> initLabTasks = labTaskMapper.selectList(initQueryWrapper);
+         List<LabTask> unhanledLabTasks = labTaskMapper.selectList(unhandledQueryWrapper);
+
+         return new Tuple(initLabTasks,unhanledLabTasks);
+     }
+
+    /**
+     * 搁置任务，修改选中的“LabTask”的“status”为“UNHANDLED”
+     * ，并进行刷新操作
+     *
+     * @param labTasks
+     * @return 搁置后返回任务状态为inited和unhandled的LabTasks
+     */
+    @Override
+    public Tuple layAsideLabTask(List<LabTask> labTasks) {
+        for(LabTask labTask : labTasks){
+            labTask.setStatus(EnumManager.LabTaskStatus.unhandled.toString());
+            labTaskMapper.updateById(labTask);
+        }
+        return initTasksForInterFace();
+    }
+
+    /**
+     * 修改选中的“LabTask”的“status”为“INITED”，并
+     * 将OrderId修改成当天的OrderId，并进行刷新操作
+     *
+     * @param labTasks
+     * @return 纳入后返回任务状态为inited和unhandled的LabTasks
+     */
+    @Override
+    public Tuple bringIntoLabTask(List<LabTask> labTasks, LabUser labUser) {
+        for(LabTask labTask : labTasks){
+            labTask.setStatus(EnumManager.LabTaskStatus.inited.toString());
+            labTask.setLabOrderId(labOrderService.checkTodayLabOrder(labUser).getId());
+            labTaskMapper.updateById(labTask);
+        }
+        return initTasksForInterFace();
     }
 }

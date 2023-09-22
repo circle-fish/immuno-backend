@@ -58,8 +58,10 @@ public class JwtUtil {
      * @return 加密的token
      */
     public String createToken(KmcsUser user) {
-        String uuid = user.getId().toString();
-
+        /**
+         * 根据密码和用户名生成token
+         */
+        String uuid = user.getPassword() + user.getUsername();
         refreshToken(user);
 
         // Jwt存储信息 -- ??? 设计需要仿照hrg来做uuid吗  或者根据username组合password之类的方法

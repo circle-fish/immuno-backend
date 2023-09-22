@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * ;
+ * 试剂的详细信息
  * @author : http://www.chiner.pro
  * @date : 2023-8-25
  */

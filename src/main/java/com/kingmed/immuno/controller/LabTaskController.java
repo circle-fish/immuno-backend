@@ -1,6 +1,9 @@
 package com.kingmed.immuno.controller;
 
+import cn.hutool.core.lang.Tuple;
+import com.baomidou.mybatisplus.extension.api.R;
 import com.kingmed.immuno.entity.LabTask;
+import com.kingmed.immuno.model.dataModel.LabUser;
 import com.kingmed.immuno.service.LabTaskService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -104,4 +107,13 @@ public class LabTaskController{
     public ResponseEntity<Boolean> deleteById(Long id){
         return ResponseEntity.ok(labTaskService.deleteById(id));
     }
+
+    public ResponseEntity<Tuple> initTasksForInterface(){return ResponseEntity.ok(labTaskService.initTasksForInterFace());}
+
+     public ResponseEntity<Tuple> layAsideLabTasks(List<LabTask> labTasks){
+        return ResponseEntity.ok(labTaskService.layAsideLabTask(labTasks));
+     }
+     public ResponseEntity<Tuple> bringIntoLabTasks(List<LabTask> labTasks, LabUser labUser){
+        return ResponseEntity.ok((labTaskService.bringIntoLabTask(labTasks,labUser)));
+     }
 }

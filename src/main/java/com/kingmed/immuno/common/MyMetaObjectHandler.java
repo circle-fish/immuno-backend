@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+/**
+ * 每次插入更新操作对通用字段进行更新
+ */
 @Component
 public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
@@ -21,7 +24,14 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void updateFill(MetaObject metaObject) {
+        /**
+         * 如果operatorName为空，则不更新updatedBy属性值
+         */
+        String operatorName = (String) metaObject.getValue("updatedBy");
+        if (operatorName != null && !operatorName.isEmpty()) {
+            this.setFieldValByName("updatedBy", operatorName, metaObject);
+        }
         this.setFieldValByName("updatedTime", new Date(), metaObject);
-        this.setFieldValByName("updatedBy", "admin", metaObject);
+        this.setFieldValByName("version",(Integer) metaObject.getValue("version") + 1 , metaObject);
     }
 }
