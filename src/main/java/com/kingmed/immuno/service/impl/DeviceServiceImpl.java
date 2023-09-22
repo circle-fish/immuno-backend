@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.kingmed.immuno.common.MapperHelpper;
 import com.kingmed.immuno.entity.Device;
+import com.kingmed.immuno.exception.ServiceException;
 import com.kingmed.immuno.mapper.DeviceMapper;
 import com.kingmed.immuno.service.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ import java.util.List;
 public class DeviceServiceImpl implements DeviceService {
     @Autowired
     private DeviceMapper deviceMapper;
+    @Autowired
+    private MapperHelpper mapperHelpper;
     
     /** 
      * 通过ID查询单条数据 
@@ -138,5 +142,19 @@ public class DeviceServiceImpl implements DeviceService {
         QueryWrapper<Device> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("biz_org_code",bizOrgCode);
         return deviceMapper.selectList(queryWrapper);
+    }
+
+    /**
+     * @param device 
+     * @return
+     */
+    @Override
+    public Device upsert(Device device) {
+        int res = mapperHelpper.upsert(device,deviceMapper);
+        if(res > 0) {
+            return device;
+        }else{
+            throw new ServiceException("LabTask 的upsert失败！ id: "+ device.getId());
+        }
     }
 }

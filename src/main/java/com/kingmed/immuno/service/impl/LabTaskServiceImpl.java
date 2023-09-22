@@ -8,7 +8,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kingmed.immuno.common.EnumManager;
+import com.kingmed.immuno.common.MapperHelpper;
 import com.kingmed.immuno.entity.LabTask;
+import com.kingmed.immuno.exception.ServiceException;
 import com.kingmed.immuno.mapper.LabTaskMapper;
 import com.kingmed.immuno.model.dataModel.LabUser;
 import com.kingmed.immuno.service.LabTaskService;
@@ -27,6 +29,8 @@ import java.util.List;
 public class LabTaskServiceImpl implements LabTaskService{
     @Autowired
     private LabTaskMapper labTaskMapper;
+    @Autowired
+    private MapperHelpper mapperHelpper;
     @Autowired
     private LabOrderServiceImpl labOrderService;
     
@@ -220,4 +224,21 @@ public class LabTaskServiceImpl implements LabTaskService{
         }
         return initTasksForInterFace();
     }
+
+    /**
+     * @param labTask
+     * @return
+     */
+    @Override
+    public LabTask upsert(LabTask labTask) {
+        int res = mapperHelpper.upsert(labTask,labTaskMapper);
+        if(res > 0)
+        {
+            return labTask;
+        }else{
+            throw new ServiceException("LabTask 的upsert失败！ id: "+ labTask.getId());
+        }
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package com.kingmed.immuno.controller;
 
 import com.kingmed.immuno.entity.LabOrder;
+import com.kingmed.immuno.entity.LabTask;
 import com.kingmed.immuno.service.LabOrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -70,7 +71,17 @@ public class LabOrderController{
     public ResponseEntity<LabOrder> add(LabOrder labOrder){
         return ResponseEntity.ok(labOrderService.insert(labOrder));
     }
-    
+     /**
+      * 更新或插入数据
+      *
+      * @param  labOrder 实例对象
+      * @return 实例对象
+      */
+     @ApiOperation("增加或更新数据")
+     @PostMapping("/upsertLabOrder")
+     public ResponseEntity<LabOrder> upsert(@RequestBody LabOrder labOrder){
+         return ResponseEntity.ok(labOrderService.upsert(labOrder));
+     }
     /** 
      * 更新数据
      *

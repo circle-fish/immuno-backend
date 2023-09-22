@@ -76,4 +76,6 @@ public interface LabOrderService{
      * @return
      */
     LabOrderTaskDO getTodayLabOrder(LabUser labUser);
+
+    LabOrder upsert(LabOrder labOrder);
 }

@@ -2,7 +2,9 @@ package com.kingmed.immuno.controller;
 
 import cn.hutool.core.lang.Tuple;
 import com.baomidou.mybatisplus.extension.api.R;
+import com.kingmed.immuno.common.MapperHelpper;
 import com.kingmed.immuno.entity.LabTask;
+import com.kingmed.immuno.mapper.LabTaskMapper;
 import com.kingmed.immuno.model.dataModel.LabUser;
 import com.kingmed.immuno.service.LabTaskService;
 import io.swagger.annotations.Api;
@@ -26,6 +28,7 @@ import java.util.List;
 public class LabTaskController{
     @Autowired
     private LabTaskService labTaskService;
+
     
     /** 
      * 通过ID查询单条数据 
@@ -83,7 +86,11 @@ public class LabTaskController{
     public ResponseEntity<LabTask> add(@RequestBody LabTask labTask){
         return ResponseEntity.ok(labTaskService.insert(labTask));
     }
-    
+     @ApiOperation("增加或更新数据")
+     @PostMapping("/upsertLabTask")
+     public ResponseEntity<LabTask> upsert(@RequestBody LabTask labTask){
+         return ResponseEntity.ok(labTaskService.upsert(labTask));
+     }
     /** 
      * 更新数据
      *
@@ -113,7 +120,11 @@ public class LabTaskController{
      public ResponseEntity<Tuple> layAsideLabTasks(List<LabTask> labTasks){
         return ResponseEntity.ok(labTaskService.layAsideLabTask(labTasks));
      }
+
+
      public ResponseEntity<Tuple> bringIntoLabTasks(List<LabTask> labTasks, LabUser labUser){
         return ResponseEntity.ok((labTaskService.bringIntoLabTask(labTasks,labUser)));
      }
+
+
 }

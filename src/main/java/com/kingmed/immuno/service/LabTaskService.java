@@ -73,4 +73,6 @@ public interface LabTaskService{
      * @return 纳入后返回任务状态为inited和unhandled的LabTasks
      */
     Tuple bringIntoLabTask(List<LabTask> labTasks, LabUser labUser);
+
+    LabTask upsert(LabTask labTask);
 }

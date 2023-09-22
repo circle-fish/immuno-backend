@@ -19,8 +19,8 @@ public class Device extends BaseEntity{
     /** 子公司代码 */
     @ApiModelProperty(name = "",notes = "子公司代码")
     private String bizOrgCode ;
-    /** 设备状态： 0—不可用 1—不可用 */
-    @ApiModelProperty(name = "",notes = "设备状态： 0—不可用 1—不可用")
+    /** 设备状态： 0—不可用 1—可用 */
+    @ApiModelProperty(name = "",notes = "设备状态： 0—不可用 1—可用")
     private Integer status ;
     /** 设备类型 */
     @ApiModelProperty(name = "",notes = "设备类型")

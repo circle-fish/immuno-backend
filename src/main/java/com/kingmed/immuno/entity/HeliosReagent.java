@@ -24,7 +24,7 @@ public class HeliosReagent extends BaseEntity{
     /** 批次号 */
     @ApiModelProperty(name = "",notes = "批次号")
     private String batchNo ;
-    /** 有效至日期 */
+    /** 有效日期至 */
     @ApiModelProperty(name = "",notes = "有效至日期")
     private Date expireDate ;
     /** 玻片中孔的数目 */

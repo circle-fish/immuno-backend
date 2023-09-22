@@ -98,7 +98,7 @@ public class DemoApplicationTests {
 
         List<LabTask> initlabTasks =  labTaskService.initTasksForInterFace().get(0);
         List<LabTask> unhandledTasks = labTaskService.initTasksForInterFace().get(1);
-        System.out.println(initlabTasks.get(0));
+        System.out.println(JSON.toJSONString(initlabTasks.get(0)));
         System.out.println(unhandledTasks.size());
 
     }

@@ -52,4 +52,6 @@ public interface DeviceService {
     boolean deleteById(Long id);
 
     List<Device> getDeviceInfo(String bizOrgCode);
+
+    Device upsert(Device device);
 }

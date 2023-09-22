@@ -8,8 +8,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kingmed.immuno.common.EnumManager;
+import com.kingmed.immuno.common.MapperHelpper;
 import com.kingmed.immuno.entity.LabOrder;
 import com.kingmed.immuno.entity.LabTask;
+import com.kingmed.immuno.exception.ServiceException;
 import com.kingmed.immuno.mapper.LabOrderMapper;
 import com.kingmed.immuno.mapper.LabTaskMapper;
 import com.kingmed.immuno.model.dataModel.LabUser;
@@ -39,6 +41,8 @@ public class LabOrderServiceImpl implements LabOrderService {
     private LabOrderFactory labOrderFactory;
     @Autowired
     private LabTaskMapper labTaskMapper;
+    @Autowired
+    private MapperHelpper mapperHelpper;
 
     /**
      * 通过ID查询单条数据
@@ -259,6 +263,22 @@ public class LabOrderServiceImpl implements LabOrderService {
         return new LabOrderTaskDO(labTasks,labOrder);
 
     }
+
+    /**
+     * @param labOrder 
+     * @return
+     */
+    @Override
+    public LabOrder upsert(LabOrder labOrder) {
+        int res = mapperHelpper.upsert(labOrder,labOrderMapper);
+        if(res > 0)
+        {
+            return labOrder;
+        }else{
+            throw new ServiceException("LabOrder 的upsert失败！ id: "+ labOrder.getId());
+        }
+    }
+
 
     /**
      * 根据参数和查询条件构造器对要绑定的LabTask进行信息的更新
