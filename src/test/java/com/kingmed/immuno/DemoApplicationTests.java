@@ -85,10 +85,6 @@ public class DemoApplicationTests {
         while ((line = bufferedReader.readLine()) != null) {
             stringBuilder.append(line);
             stringBuilder.append(System.lineSeparator());
-            免疫荧光-开发
-            免疫荧光-开发
-            外部
-            外部
         }
 
         bufferedReader.close();
