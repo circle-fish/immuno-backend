@@ -14,7 +14,6 @@ Test配置路徑無法識別問題——
 9.5 problems:
 restemplate 访问 外部接口
 以及对webmvcconfig 拦截器作用和用法
-
 token访问kmcs接口问题-取到对应数据
 KMCS平台接口文档部分
 https://axqhqiqr7l0.feishu.cn/docx/DyS9dgmvgo0Sypxwuk3ccWqGnvc
@@ -22,26 +21,26 @@ redis 使用
 
 9.11 testing problmes:
 
-desc：
-kmcs_user 继承自baseEntity 但是现有数据库生成没有version等字段 -
-solu:
-PDManer修改数据库-进行通用字段添加(finished) 并添加到sql文件夹下
+    problems：
+        kmcs_user 继承自baseEntity 但是现有数据库生成没有version等字段 -
+    solutions:
+        PDManer修改数据库-进行通用字段添加(finished) 并添加到sql文件夹下
 
-not null 问题 数据字典如何设置默认值空字符串
+    not null 问题 数据字典如何设置默认值空字符串
 
 9.12 design
 
-1.得到accountId 以后拿哪一个，以及查询岗位后得到的orgCode如何区分，在后续业务流程如何使用,有何区别？
-    review: 暂定拿第一个 --- 先存储下后面kmcs平台可能调用
-2.accountId与token是否都需要，区别?
-    如果只需要accountId  kmcsuser.setToken(accountId) 可否？
-    冗余设计，先存着
-3.accountId 对应很多orgCode(暂定权限字段) 如何处理？
-    拿第一个
-4.DatetimeUtil中设置一天的0点与24点的方法是否可行？
-    到毫秒级别
-5.token是一个子公司用户的用户们公用的？
-    再看
+    1.得到accountId 以后拿哪一个，以及查询岗位后得到的orgCode如何区分，在后续业务流程如何使用,有何区别？
+        review: 暂定拿第一个 --- 先存储下后面kmcs平台可能调用
+    2.accountId与token是否都需要，区别?
+        如果只需要accountId  kmcsuser.setToken(accountId) 可否？
+        冗余设计，先存着
+    3.accountId 对应很多orgCode(暂定权限字段) 如何处理？
+        拿第一个
+    4.DatetimeUtil中设置一天的0点与24点的方法是否可行？
+        到毫秒级别
+    5.token是一个子公司用户的用户们公用的？
+        再看
 9.13 testing
 
  Expected one result (or null) to be returned by selectOne(), but found: 3
@@ -56,18 +55,18 @@ not null 问题 数据字典如何设置默认值空字符串
     一个模块到一个，设计交付再下一个
 
  9.15
+     problems：
+         安装docker环境，清理空间, 设计问题，可用的快速开发工具
+         使用gpt快速生成java版本的代码加快编码速度
+     done :
+         简单概要设计 + 补全任务处理模块代码
 
- done :
- 简单概要设计 + 补全任务处理模块代码
+     left:
+         任务分配模块的设计文档 需要做好
+         heliosAllocationUtils 工具类补全，添加任务到页面的功能
+         以及基础数据结构设计上的确认 VirtualMachine等
 
- left:
- 任务分配模块的设计文档 需要做好
- heliosAllocationUtils 工具类补全，添加任务到页面的功能
- 以及基础数据结构设计上的确认 VirtualMachine等
 
- problems：
- 安装docker环境，清理空间, 设计问题，可用的快速开发工具
- 使用gpt快速生成java版本的代码加快编码速度
 
  想好测试逻辑
 
