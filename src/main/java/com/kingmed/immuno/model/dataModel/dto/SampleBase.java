@@ -2,6 +2,7 @@ package com.kingmed.immuno.model.dataModel.dto;
 
 
 import com.kingmed.immuno.entity.BaseEntity;
+import com.kingmed.immuno.model.vo.HeliosLabTaskWithPostion;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,5 +24,11 @@ public class SampleBase extends BaseEntity {
     @ApiModelProperty(name = "",notes = "试剂批号, 在任务分配时确定")
     private String reagentLot;
 
-
+    public HeliosLabTaskWithPostion ToHeliosLabTaskWithPostion(){
+        SampleBase sampleBase = this;
+        if(sampleBase instanceof HeliosLabTaskWithPostion){
+            return (HeliosLabTaskWithPostion) sampleBase;
+        }
+        return new HeliosLabTaskWithPostion(this);
+    }
 }

@@ -22,7 +22,14 @@ import com.kingmed.immuno.service.impl.KmcsServiceImpl;
 import com.kingmed.immuno.service.impl.KmcsUserServiceImpl;
 import com.kingmed.immuno.service.impl.LabTaskServiceImpl;
 import com.kingmed.immuno.service.impl.TaskConversionServiceImpl;
+import com.kingmed.immuno.util.DateTimeUtil;
+import com.kingmed.immuno.util.ExcelGenerator;
 import com.kingmed.immuno.util.JwtUtil;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.RegionUtil;
+import org.apache.poi.xssf.usermodel.*;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.remoting.exception.RemotingException;
@@ -38,8 +45,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -92,17 +101,6 @@ public class DemoApplicationTests {
 
         return stringBuilder.toString();
     }
-
-    @Test
-    public void testAny() throws IOException {
-
-        List<LabTask> initlabTasks =  labTaskService.initTasksForInterFace().get(0);
-        List<LabTask> unhandledTasks = labTaskService.initTasksForInterFace().get(1);
-        System.out.println(JSON.toJSONString(initlabTasks.get(0)));
-        System.out.println(unhandledTasks.size());
-
-    }
-
     @Test
     public void testMessageFlow() throws IOException, MQBrokerException, RemotingException, InterruptedException, MQClientException {
 
@@ -203,25 +201,5 @@ public class DemoApplicationTests {
 
     }
 
-    @Test
-    public void testConvertKmTaskToLabTask() throws IOException, NoSuchFieldException {
-        List<String> bizOrgCodes = kmcsTaskMapper.selectALlByBizOrgCode();
-        //默认先设为String 之后改为泛型--输列名获取参数值
-
-        System.out.println(bizOrgCodes);
-        for (String bizOrgCode : bizOrgCodes) {
-            BaseResponse<ConversionResult> response = taskConversionService.convertKmTaskToLabTask(bizOrgCode);
-            if (response.getData() == null) {
-                continue;
-            }
-            System.out.println(response.getCode());
-            System.out.println(response.getMessage());
-            List<LabTask> labTasks = response.getData().getLabTasks();
-            System.out.println(labTasks.size());
-            for (int i = 0; i < labTasks.size(); i++)
-                System.out.println(JSON.toJSONString(labTasks.get(i)));
-        }
-        System.out.println("convertion completed .................................................");
-    }
 
 }

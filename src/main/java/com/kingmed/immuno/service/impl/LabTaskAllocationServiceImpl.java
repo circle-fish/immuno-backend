@@ -1,11 +1,18 @@
 package com.kingmed.immuno.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.lang.Tuple;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.kingmed.immuno.common.EnumManager;
 import com.kingmed.immuno.common.IndexCounter;
+import com.kingmed.immuno.common.MapperHelpper;
 import com.kingmed.immuno.entity.Device;
 import com.kingmed.immuno.entity.HeliosReagent;
 import com.kingmed.immuno.entity.LabTask;
+import com.kingmed.immuno.mapper.DeviceMapper;
+import com.kingmed.immuno.mapper.LabTaskMapper;
 import com.kingmed.immuno.model.dataModel.InitVirtualMachinesResult;
+import com.kingmed.immuno.model.dataModel.ModificationResult;
 import com.kingmed.immuno.model.dataModel.SampleAndQCTasksResult;
 import com.kingmed.immuno.model.dataModel.TaskAllocationResult;
 import com.kingmed.immuno.model.dataModel.dto.LabTaskDO;
@@ -16,12 +23,26 @@ import com.kingmed.immuno.model.vo.HeliosLabTaskWithPostion;
 import com.kingmed.immuno.service.LabTaskAllocationService;
 import com.kingmed.immuno.util.heliosAllocationUtils;
 import io.swagger.models.auth.In;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 import static com.kingmed.immuno.common.CommonConstants.QC_NAMES;
-
+@Service
 public class LabTaskAllocationServiceImpl implements LabTaskAllocationService {
+    @Autowired
+    private MapperHelpper mapperHelpper;
+    @Autowired
+    private LabTaskMapper labTaskMapper;
+    @Autowired
+    private DeviceMapper deviceMapper;
+    /**
+     * 缓存virtualmachine，方便excel导出
+     */
+    private static Set<VirtualMachine> virtualMachineList = new HashSet<>();
     /**
      * 处理Helios的该函数用来处理Helios设备的任务分配问题
      * 在第一个版本优先解决ANA的任务分配问题
@@ -33,12 +54,14 @@ public class LabTaskAllocationServiceImpl implements LabTaskAllocationService {
      *                      (对应 MyMetaObjectHandler中的createdBy默认值 admin)
      * @return 任务分配结果
      */
+
+
     @Override
     public TaskAllocationResult heliosTaskAllocation(List<LabTask> labTasks,
                                                                    List<Device> devices,
                                                                    HeliosReagent heliosReagent,
-                                                                   String operatorName) {
-
+                                                                   String operatorName)
+    {
         int numWells = heliosReagent.getNumWells();
         int numQc =  heliosReagent.getNumQc();
         /**
@@ -57,6 +80,7 @@ public class LabTaskAllocationServiceImpl implements LabTaskAllocationService {
         /**
          * 初始化设备相关信息
          */
+
         List<VirtualMachine> virtualMachines = initVirtualMachines(devices).getVirtualMachines();
         IndexCounter virtualMachineIndex = new IndexCounter(0,virtualMachines.size());
 
@@ -81,14 +105,14 @@ public class LabTaskAllocationServiceImpl implements LabTaskAllocationService {
                 List<LabTask> qcAddToSlideList = heliosAllocationUtils.addQCToSlide(virtualSlide, QC_NAMES, numQc,
                         nextLabTask, nextVirtualMachine, heliosReagent, operatorName);
 
-                for(LabTask qctask : qcAddToSlideList ) {
-                    if(qctask != null){
-                        qcTasksForInsert.add((LabTaskDO) qctask);
-                        //将LabTask父类强制转换为子类???是否安全
+                for(LabTask qcTask : qcAddToSlideList ) {
+                    if(qcTask != null){
+                        LabTaskDO qcTaskDO = new LabTaskDO(qcTask);
+                        qcTasksForInsert.add(qcTaskDO);
+                        //无法强制转换为子类，通过创建对象实例赋值
                     }
                 }
             }
-
             heliosAllocationUtils.addSampleToSlide(virtualSlide, nextVirtualMachine, heliosReagent, nextLabTask, labTaskIndex);
 
             nextVirtualMachine.addSlide(virtualSlide);
@@ -96,11 +120,11 @@ public class LabTaskAllocationServiceImpl implements LabTaskAllocationService {
         }
 
         fillVirtualLabTasks(virtualMachines, sampleTasks);
-
+        virtualMachineList.addAll(virtualMachines);
         return new TaskAllocationResult(sampleTasks, qcTasksForInsert, qcTasksForDelete);
 
     }
-
+    
     /**
      * 初始化虚拟的设备
      *
@@ -111,7 +135,7 @@ public class LabTaskAllocationServiceImpl implements LabTaskAllocationService {
         List<VirtualMachine> virtualMachines = new ArrayList<>();
         Map<Integer,Device> deviceMap = new HashMap<>();
         for(Device device : deviceList){
-            if(device.getDeviceType() == EnumManager.DeviceType.helios.getValue()){
+            if(device.getDeviceType() == EnumManager.DeviceType.helios.getValue() && device.getStatus() == 1 ){
                 VirtualMachine virtualMachine = new VirtualMachine(device);
                 virtualMachines.add(virtualMachine);
                 deviceMap.put(device.getId(),device);
@@ -204,5 +228,65 @@ public class LabTaskAllocationServiceImpl implements LabTaskAllocationService {
         }
 
         return virtualLabTasks;
+    }
+
+    /**
+     * 数据库更新：
+     * device的 labTestItemIds 添加 、
+     * 任务LabTask的添加与删除以及与其绑定的设备试剂等信息的更新
+     * @param result
+     * @return 更新后的设备和任务列表的元组
+     */
+    @Transactional
+    public ModificationResult DBModification(TaskAllocationResult result){
+        List<LabTask> sampleTasks = result.getSampleTasks();
+        List<LabTaskDO> qcTasksForInsert = result.getQcTasksForInsert();
+        List<LabTask> qcTasksForDelete = result.getQcTasksForDelete();
+
+        List<LabTask> retTasks = new ArrayList<>();
+        List<Device> retDevices = new ArrayList<>();
+        List<VirtualMachine> retVirtualMachines = new ArrayList<>();
+        /**
+         * 更新任务列表
+         */
+        for(LabTask sample : sampleTasks){
+            mapperHelpper.upsert(sample,labTaskMapper);
+            retTasks.add(sample);
+        }
+        for(LabTask qcTask : qcTasksForDelete){
+            labTaskMapper.deleteByid(qcTask.getId());
+        }
+        for(LabTaskDO qcTask : qcTasksForInsert){
+            LabTask labTask = new LabTask();
+            BeanUtil.copyProperties(qcTask,labTask);
+            //ID是否也被赋值???
+            mapperHelpper.upsert(labTask,labTaskMapper);
+            retTasks.add(labTask);
+        }
+        /**
+         * 更新对应设备的项目id列表
+         */
+        for(VirtualMachine virtualMachine : virtualMachineList){
+            Device device = deviceMapper.selectById(virtualMachine.getId());
+            UpdateWrapper<Device> deviceUpdateWrapper = new UpdateWrapper<>();
+            System.out.println("虚拟设备结构体的项目id表"+virtualMachine.getLabTestItemIdList());
+            System.out.println(virtualMachine.getLabTestItemIds());
+            deviceUpdateWrapper.set("lab_test_item_ids",virtualMachine.getLabTestItemIds());
+            deviceMapper.update(device,deviceUpdateWrapper);
+            retDevices.add(device);
+            retVirtualMachines.add(virtualMachine);
+        }
+        /**
+         *完成数据库中更新将缓存清空
+         */
+//        virtualMachineList.clear();
+        return new ModificationResult(retDevices,retTasks,retVirtualMachines);
+    }
+
+    public Set<VirtualMachine> getVirtualMachineList() {
+        return virtualMachineList;
+    }
+    public void clearVirtualMachineList(){
+        virtualMachineList.clear();
     }
 }

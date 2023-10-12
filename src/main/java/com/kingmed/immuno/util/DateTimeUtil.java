@@ -50,4 +50,18 @@ public class DateTimeUtil {
         Date currentDate = new Date(currentTimeSeconds * 1000);
         return currentDate;
     }
+
+    /**
+     * 当前日期加指定的年月日
+     * @param date
+     * @return
+     */
+    public static Date addTime(Date date,int year,int month,int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.YEAR, year);
+        calendar.add(Calendar.MONTH,month);
+        calendar.add(Calendar.DAY_OF_MONTH,day);
+        return calendar.getTime();
+    }
 }

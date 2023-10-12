@@ -11,6 +11,7 @@ import com.kingmed.immuno.model.vo.HeliosLabTaskWithPostion;
 import com.kingmed.immuno.service.factory.HeliosLabTaskWithPositionFactory;
 import com.kingmed.immuno.service.factory.LabTaskFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +19,8 @@ import java.util.List;
 /**
  * 任务分配的工具类，添加sample任务和qc任务到Slide中
  */
+
 public class heliosAllocationUtils {
-
-    @Autowired
-    private static LabTaskFactory labTaskFactory;
-    @Autowired
-    private static HeliosLabTaskWithPositionFactory heliosLabTaskWithPositionFactory;
-
 
     public static List<LabTask>  addQCToSlide(VirtualSlide virtualSlide,
                                               List<String> qcNames,
@@ -41,7 +37,7 @@ public class heliosAllocationUtils {
             if (!virtualSlide.checkAddable()) {
                 throw new ServiceException("该玻璃片的孔位已满！");
             }
-            LabTask virtualLabTask = labTaskFactory.initQcLabTask(nextLabTask,
+            LabTask virtualLabTask = LabTaskFactory.initQcLabTask(nextLabTask,
                     nextVirtualMachine,
                     heliosReagent,
                     nextVirtualMachine.getVirtualSlides().size(),
@@ -67,7 +63,7 @@ public class heliosAllocationUtils {
             if (counter.isMax()){
                 return;
             }
-            HeliosLabTaskWithPostion virtualLabTask = heliosLabTaskWithPositionFactory.initByNormLabTask(
+            HeliosLabTaskWithPostion virtualLabTask = HeliosLabTaskWithPositionFactory.initByNormLabTask(
                     labTask,
                     device,
                     heliosReagent,
@@ -79,13 +75,4 @@ public class heliosAllocationUtils {
         }
     }
 
-    /**
-     * 将LabTask父类强制转换为子类???
-     *
-     * @param task
-     * @return LabTaskDO
-     */
-    public static LabTaskDO convertToDO(LabTask task) {
-        return (LabTaskDO) task;
-    }
 }

@@ -31,7 +31,7 @@ public class KmcsTaskController{
      * @return 实例对象
      */
     @ApiOperation("通过ID查询单条数据")
-    @GetMapping("{taskid}")
+    @GetMapping("getKmcsTaskById/{taskid}")
     public ResponseEntity<KmcsTask> queryById(String taskId){
         return ResponseEntity.ok(kmcsTaskService.queryById(taskId));
     }

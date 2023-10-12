@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 public class LabOrderFactory {
     public LabOrder createLabOrder(LabUser labUser){
         LabOrder labOrder = new LabOrder();
+        labOrder.setWet("30%");
+        labOrder.setTemperature("24℃");
         labOrder.setBizOrgCode(labUser.getBizOrgCode());
         return labOrder;
     }

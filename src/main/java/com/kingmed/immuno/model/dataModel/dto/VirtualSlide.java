@@ -7,8 +7,11 @@ import com.kingmed.immuno.model.vo.HeliosLabTaskWithPostion;
 import com.kingmed.immuno.service.factory.HeliosLabTaskWithPositionFactory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,12 +20,10 @@ import java.util.List;
  * 载物玻璃片，一个破璃片有每个孔位
  * 每个孔位对应一个SampleBase的virtualLabTask
  */
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
-public class VirtualSlide {
-    @Autowired
-    private HeliosLabTaskWithPositionFactory heliosLabTaskWithPositionFactory;
-
+public class VirtualSlide implements Serializable {
     private Integer initIndex;
     private Integer nextIndex;
     private Integer labTestItemId;
@@ -58,7 +59,7 @@ public class VirtualSlide {
             if(indexCounter.isMax()){
                 return;
             }
-            HeliosLabTaskWithPostion virtualLabTask = heliosLabTaskWithPositionFactory.
+            HeliosLabTaskWithPostion virtualLabTask = HeliosLabTaskWithPositionFactory.
                     initByNormLabTask(
                             labTask,device,heliosReagent,
                             device.getVirtualSlides().size(),
@@ -85,6 +86,17 @@ public class VirtualSlide {
         return this.nextIndex < this.capacity;
     }
 
+    /**
+     * 测试用的打印详细信息函数
+     */
+    public void print(){
 
+        System.out.println(String.format("孔位(任务)数：%s\n 绑定设备：%s\n 项目id：%s\n ",
+                nextIndex,getBindDevice().getDeviceName(),labTestItemId));
+        for(SampleBase virtualLabTask : virtualLabTasks){
+            System.out.println(virtualLabTask);
+        }
+
+    }
 
 }

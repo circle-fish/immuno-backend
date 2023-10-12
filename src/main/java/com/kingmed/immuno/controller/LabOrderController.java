@@ -2,6 +2,7 @@ package com.kingmed.immuno.controller;
 
 import com.kingmed.immuno.entity.LabOrder;
 import com.kingmed.immuno.entity.LabTask;
+import com.kingmed.immuno.model.dataModel.LabUser;
 import com.kingmed.immuno.service.LabOrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -105,4 +106,12 @@ public class LabOrderController{
     public ResponseEntity<Boolean> deleteById(Long id){
         return ResponseEntity.ok(labOrderService.deleteById(id));
     }
+
+
+    public ResponseEntity<List<LabTask>> bindLabTaskToLabOrder(LabOrder labOrder, LabUser labUser){
+        return ResponseEntity.ok(labOrderService.bindLabTaskToLabOrder(labOrder,labUser));
+    }
+     public ResponseEntity<LabOrder> checkTodayLabOrder(LabUser labUser){
+         return ResponseEntity.ok(labOrderService.checkTodayLabOrder(labUser));
+     }
 }

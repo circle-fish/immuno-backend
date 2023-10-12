@@ -1,6 +1,6 @@
 # ##构造异常值 :
 # 1 . 多对多 / 一对多 / 多对一 T
-# 2 . 不存在情况 ——返回 404
+# 2 . 不存在情况 则 返回 404
 # 3 . 多个bigorzcode / 多个appID T
 # 4 . LOOSE / STRICT 的限制
 
@@ -23,7 +23,7 @@ CREATE TABLE tmp_table(
                           PRIMARY KEY (task_id)
 )  COMMENT = '';
 
-    DROP TABLE IF EXISTS tmp_table;
+
     INSERT INTO tmp_table
     (SELECT *
     FROM kmcs_task
@@ -105,14 +105,22 @@ CREATE TABLE tmp_table(
 START TRANSACTION ;
 
     SAVEPOINT p2;
-#     批量生成数据
-    call loopTest();
-
-#     重置数据
-    DELETE From kmcs_task where task_id like 'testing%' ;
-    DELETE FROM lab_test_item where name  like '@labTestItemName%' ;
+#     删除任务数据数据
+    DELETE From kmcs_task where task_id like '%testing%' ;
+    DELETE FROM lab_test_item where name like '@labTestItemName%' ;
     DELETE from  lab_test_item_rel where id > 5 ;
     DELETE FROM  lab_task where 1 = 1;
+
+
+#     删除批次设备试剂等数据
+    DELETE From lab_order where biz_org_code = '-testing@bizOrgCode1' ;
+    #   注每次创建labOrder都要绑定当天同批次的LabTask不然会报出异常-查询为空
+    DELETE FROM device where device.biz_org_code  = '-testing@bizOrgCode1' ;
+    DELETE FROM helios_reagent where biz_org_code  = '-testing@bizOrgCode1' ;
+
+#     批量生成任务数据
+    call loopTest();
+    SELECT * FROM lab_task;
 
     rollback to p2;
 

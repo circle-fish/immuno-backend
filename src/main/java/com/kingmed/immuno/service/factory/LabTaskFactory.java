@@ -9,11 +9,8 @@ import com.kingmed.immuno.model.dataModel.dto.LabTaskDO;
 import com.kingmed.immuno.model.dataModel.dto.VirtualMachine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 @Component
 public class LabTaskFactory {
-    @Autowired
-    private BaseFactory baseFactory;
 
     //取sorted_index的最大的labtestitem,转换成labTask
     public LabTask createLabTask(KmcsTask kmcsTask, LabTestItem labTestItem){
@@ -35,7 +32,7 @@ public class LabTaskFactory {
     }
 
 
-    public LabTask initQcLabTask(
+    public static LabTask initQcLabTask(
             LabTask labTask,
             VirtualMachine virtualMachine,
             HeliosReagent heliosReagent,
@@ -68,7 +65,7 @@ public class LabTaskFactory {
         qcLabTask.setReagentType(labTask.getReagentType());
         qcLabTask.setReagentLot(heliosReagent.getBatchNo());
         //批次号
-        qcLabTask = (LabTask) baseFactory.initBaseAttribute(qcLabTask, operatorName);
+        qcLabTask = (LabTask) BaseFactory.initBaseAttribute(qcLabTask, operatorName);
 
         return qcLabTask;
 

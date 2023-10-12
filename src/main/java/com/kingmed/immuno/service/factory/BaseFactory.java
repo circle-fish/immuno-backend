@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Component
 public class BaseFactory {
-    public BaseEntity  initBaseAttribute(BaseEntity entity,String operatorName){
+    public static BaseEntity initBaseAttribute(BaseEntity entity,String operatorName){
         Date now = new Date();
         entity.setCreatedBy(operatorName);
         entity.setCreatedTime(now);

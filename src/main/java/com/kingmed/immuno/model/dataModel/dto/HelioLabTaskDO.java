@@ -1,9 +1,11 @@
 package com.kingmed.immuno.model.dataModel.dto;
 
+import com.kingmed.immuno.entity.LabTask;
+
 /**
  * Heliostask的数据结构
  */
-public class HelioLabTaskDO extends LabTaskDO{
+public class HelioLabTaskDO extends LabTaskDO {
     private int slideIndex;
     private int wellIndex;
 

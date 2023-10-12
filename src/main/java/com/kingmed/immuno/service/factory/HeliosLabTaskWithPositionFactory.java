@@ -15,10 +15,11 @@ import java.util.Map;
 @Component
 public class HeliosLabTaskWithPositionFactory {
 
-    public HeliosLabTaskWithPostion setAttributesByLabTask(LabTask labTask){
+    public static HeliosLabTaskWithPostion setAttributesByLabTask(LabTask labTask){
         HeliosLabTaskWithPostion heliosLabTaskWithPostion = new HeliosLabTaskWithPostion();
 
         heliosLabTaskWithPostion.setTaskType(labTask.getTaskType());
+        heliosLabTaskWithPostion.setExperimentNo(labTask.getExperimentNo());
         heliosLabTaskWithPostion.setLabTestItemId(labTask.getLabTestItemId());
         heliosLabTaskWithPostion.setLabTestItemName(labTask.getLabTestItemName());
         heliosLabTaskWithPostion.setBizOrgCode(labTask.getBizOrgCode());
@@ -26,7 +27,12 @@ public class HeliosLabTaskWithPositionFactory {
         heliosLabTaskWithPostion.setStatus(EnumManager.LabTaskStatus.allocated.toString());
         return heliosLabTaskWithPostion;
     }
-    public HeliosLabTaskWithPostion initByNormLabTask(LabTask labTask,
+
+    /**
+     *占位时初始化, 后面在分配设备时更新id, barcode, version等信息
+     *最后回传给前端
+     */
+    public static HeliosLabTaskWithPostion initByNormLabTask(LabTask labTask,
                                                       VirtualMachine virtualMachine,
                                                       HeliosReagent heliosReagent,
                                                       int slideIndex,
@@ -39,6 +45,7 @@ public class HeliosLabTaskWithPositionFactory {
         heliosLabTaskWithPostion.setDeviceId(virtualMachine.getId());
         heliosLabTaskWithPostion.setDevicePosition(String.format("%d-%d-%d", virtualMachine.getId(), slideIndex, wellIndex));
         heliosLabTaskWithPostion.setDeviceName(virtualMachine.getDeviceName());
+        heliosLabTaskWithPostion.setReagentId(heliosReagent.getId());
         heliosLabTaskWithPostion.setReagentLot(heliosReagent.getBatchNo());
         heliosLabTaskWithPostion.setSlideIndex(slideIndex);
         heliosLabTaskWithPostion.setWellIndex(wellIndex);
@@ -48,7 +55,7 @@ public class HeliosLabTaskWithPositionFactory {
 
         return heliosLabTaskWithPostion;
     }
-    public HeliosLabTaskWithPostion initByQCLabTask(LabTask qcLabTask, Map<Integer, Device> deviceMap){
+    public static HeliosLabTaskWithPostion initByQCLabTask(LabTask qcLabTask, Map<Integer, Device> deviceMap){
         String []indexStrArray = qcLabTask.getDevicePosition().split("-");
         int slideIndex = Integer.parseInt(indexStrArray[1]);
         int wellIndex = Integer.parseInt(indexStrArray[2]);
@@ -58,11 +65,14 @@ public class HeliosLabTaskWithPositionFactory {
         heliosLabTaskWithPostion.setSlideIndex(slideIndex);
         heliosLabTaskWithPostion.setWellIndex(wellIndex);
         heliosLabTaskWithPostion.setDeviceName(deviceName);
+        heliosLabTaskWithPostion.setReagentLot(qcLabTask.getReagentLot());
+        heliosLabTaskWithPostion.setDevicePosition(String.format("%d-%d-%d",qcLabTask.getDeviceId(), slideIndex, wellIndex));
 
+        heliosLabTaskWithPostion.setStatus(EnumManager.LabTaskStatus.allocated.toString());
         return heliosLabTaskWithPostion;
     }
 
-    public List<HeliosLabTaskWithPostion> initListByQCLabTask(List<LabTask> qcLabTasks, Map<Integer,Device> deviceMap){
+    public static List<HeliosLabTaskWithPostion> initListByQCLabTask(List<LabTask> qcLabTasks, Map<Integer,Device> deviceMap){
 
         List<HeliosLabTaskWithPostion> heliosLabTaskWithPostions = new ArrayList<>();
         for(LabTask qcLabTask : qcLabTasks){
@@ -71,4 +81,17 @@ public class HeliosLabTaskWithPositionFactory {
         return heliosLabTaskWithPostions;
     }
 
+    /**
+     * 设备分配完成后, 修改占位HeliosLabTaskWithPostion的相关属性
+     * 需要修改的属性:
+     */
+
+    public HeliosLabTaskWithPostion updateByLabTask(HeliosLabTaskWithPostion virtualLabTask,
+                                                    LabTask labTask){
+        virtualLabTask.setId(labTask.getId());
+        virtualLabTask.setBarcode(labTask.getBarcode());
+        virtualLabTask.setExperimentNo(labTask.getExperimentNo());
+        virtualLabTask.setVersion(labTask.getVersion());
+        return virtualLabTask;
+    }
 }

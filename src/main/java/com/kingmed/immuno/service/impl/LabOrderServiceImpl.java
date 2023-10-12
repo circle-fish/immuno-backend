@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWra
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kingmed.immuno.common.EnumManager;
 import com.kingmed.immuno.common.MapperHelpper;
+import com.kingmed.immuno.consumer.RQConsumer;
 import com.kingmed.immuno.entity.LabOrder;
 import com.kingmed.immuno.entity.LabTask;
 import com.kingmed.immuno.exception.ServiceException;
@@ -19,6 +20,8 @@ import com.kingmed.immuno.model.dataModel.dto.LabOrderTaskDO;
 import com.kingmed.immuno.service.LabOrderService;
 import com.kingmed.immuno.service.factory.LabOrderFactory;
 import com.kingmed.immuno.util.DateTimeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +46,8 @@ public class LabOrderServiceImpl implements LabOrderService {
     private LabTaskMapper labTaskMapper;
     @Autowired
     private MapperHelpper mapperHelpper;
+
+    private static Logger logger = LoggerFactory.getLogger(LabOrderServiceImpl.class);
 
     /**
      * 通过ID查询单条数据
@@ -226,39 +231,38 @@ public class LabOrderServiceImpl implements LabOrderService {
          */
 
         List<LabOrder> labOrders = labOrderMapper.selectList(labOrderQueryWrapper);
-        LabOrder labOrder = labOrders.get(0);
 
         /**
          * 如果没有今天的lab_order,则创建一个
          */
         boolean isInserted = false;
-        if(labOrder == null){
+        LabOrder labOrder = null;
+        if(labOrders.isEmpty()){
             labOrder = labOrderFactory.createLabOrder(labUser);
             labOrderMapper.insert(labOrder);
             isInserted = true;
+        }else{
+            labOrder = labOrders.get(0);
         }
         /**
-         *  根据创建的情况,绑定lab_task
+         *根据创建的情况,绑定lab_task
          */
-        List<LabTask> labTasks = new ArrayList<>();
+        QueryWrapper<LabTask> labTaskQueryWrapper = new QueryWrapper<>();
         if(isInserted){
-            QueryWrapper<LabTask> labTaskQueryWrapper = new QueryWrapper<>();
             labTaskQueryWrapper.eq("biz_org_code",labOrder.getBizOrgCode())
                     .eq("status", EnumManager.LabTaskStatus.inited.toString())
                     .last("for update");
-            labTasks = LabTaskBindingUpdate(labUser, labOrder, labTaskQueryWrapper);
 
         }else{
-
-            QueryWrapper<LabTask> labTaskQueryWrapper = new QueryWrapper<>();
             labTaskQueryWrapper.eq("lab_order_id",labOrder.getId())
                     .eq("biz_org_code",labOrder.getBizOrgCode())
-                    .eq("status", EnumManager.LabTaskStatus.inited.toString());
+                    .eq("status", EnumManager.LabTaskStatus.binded.toString());
 
-            labTasks = LabTaskBindingUpdate(labUser, labOrder, labTaskQueryWrapper);
         }
-        if(labTasks.isEmpty() || labOrder == null) {
-            throw new RuntimeException("出现异常！！任务个数"+labTasks.size()+"/n任务批次："+labOrder.toString());
+        List<LabTask> labTasks = LabTaskBindingUpdate(labUser, labOrder, labTaskQueryWrapper);
+        if(labTasks.isEmpty()) {
+            logger.info("今日暂无绑定任务\n任务批次："+ labOrder
+            +"\n已经分配完成或者无今日任务");
         }
         return new LabOrderTaskDO(labTasks,labOrder);
 

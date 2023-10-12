@@ -62,4 +62,5 @@ public interface LabTaskAllocationService {
     List<HeliosLabTaskWithPostion> fillVirtualLabTasks(List<VirtualMachine> virtualMachineList,
                                                               List<LabTask> labTasks);
 
+
 }
