@@ -1,7 +1,5 @@
 package com.kingmed.immuno.model.dataModel.dto;
 
-import com.kingmed.immuno.entity.LabTask;
-
 /**
  * Heliostask的数据结构
  */

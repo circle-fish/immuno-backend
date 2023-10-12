@@ -6,10 +6,8 @@ import com.kingmed.immuno.entity.LabTask;
 import com.kingmed.immuno.model.vo.HeliosLabTaskWithPostion;
 import com.kingmed.immuno.service.factory.HeliosLabTaskWithPositionFactory;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.ArrayList;

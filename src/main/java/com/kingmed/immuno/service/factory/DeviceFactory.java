@@ -2,8 +2,6 @@ package com.kingmed.immuno.service.factory;
 
 import com.kingmed.immuno.common.EnumManager;
 import com.kingmed.immuno.entity.Device;
-import com.kingmed.immuno.entity.HeliosReagent;
-import com.kingmed.immuno.util.DateTimeUtil;
 import org.springframework.stereotype.Component;
 
 @Component

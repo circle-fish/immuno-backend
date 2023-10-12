@@ -1,7 +1,6 @@
 package com.kingmed.immuno.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.lang.Tuple;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.kingmed.immuno.common.EnumManager;
 import com.kingmed.immuno.common.IndexCounter;
@@ -22,8 +21,6 @@ import com.kingmed.immuno.model.dataModel.dto.VirtualSlide;
 import com.kingmed.immuno.model.vo.HeliosLabTaskWithPostion;
 import com.kingmed.immuno.service.LabTaskAllocationService;
 import com.kingmed.immuno.util.heliosAllocationUtils;
-import io.swagger.models.auth.In;
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

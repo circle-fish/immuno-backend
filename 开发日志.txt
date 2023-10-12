@@ -156,10 +156,11 @@ redis 使用
         2.heliosTaskAllocation的测试初步完成，剩余数据持久化细节需要完善
         3.初始化时设为空字符串，每次添加virtualSlide在Slide的构造函数中添加labTestItemId
         4.把工厂类的调用方法声明为static进行使用，理解静态的原理
-10.10
+10.10-10.12
     problems:
         1.第二次调用时taskAllocation再VirtualMachine和VirtualSlide部分出现stackOverflowError错误
         2.在数据库更新中mybatis遇到类型转换错误问题 ——> Integer cannot cast to Long
+        3.实验区数据表wellIndex中差1，是打印还是直接在数据库中去改（unsolved）
     solutions:
         1.原因——实体类字段太多，两个类VirtualSlide与VirtualMachine相互循环引用导致栈溢出
         @Data ： 注在类上，提供类的get、set、equals、hashCode、canEqual、toString方法

@@ -1,7 +1,6 @@
 package com.kingmed.immuno.model.vo;
 
 import com.kingmed.immuno.model.dataModel.dto.SampleBase;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

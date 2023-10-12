@@ -1,10 +1,7 @@
 package com.kingmed.immuno.model.dataModel.dto;
 
 import com.kingmed.immuno.entity.Device;
-import com.kingmed.immuno.util.StringUtils;
-import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

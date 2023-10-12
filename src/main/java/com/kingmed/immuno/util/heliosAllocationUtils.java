@@ -4,14 +4,11 @@ import com.kingmed.immuno.common.IndexCounter;
 import com.kingmed.immuno.entity.HeliosReagent;
 import com.kingmed.immuno.entity.LabTask;
 import com.kingmed.immuno.exception.ServiceException;
-import com.kingmed.immuno.model.dataModel.dto.LabTaskDO;
 import com.kingmed.immuno.model.dataModel.dto.VirtualMachine;
 import com.kingmed.immuno.model.dataModel.dto.VirtualSlide;
 import com.kingmed.immuno.model.vo.HeliosLabTaskWithPostion;
 import com.kingmed.immuno.service.factory.HeliosLabTaskWithPositionFactory;
 import com.kingmed.immuno.service.factory.LabTaskFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +37,8 @@ public class heliosAllocationUtils {
             LabTask virtualLabTask = LabTaskFactory.initQcLabTask(nextLabTask,
                     nextVirtualMachine,
                     heliosReagent,
-                    nextVirtualMachine.getVirtualSlides().size(),
-                    virtualSlide.getNextIndex(),
+                    nextVirtualMachine.getVirtualSlides().size()+1,
+                    virtualSlide.getNextIndex()+1,
                     qcNames.get(i),
                     operatorName
             );

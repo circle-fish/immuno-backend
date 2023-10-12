@@ -1,23 +1,19 @@
 package com.kingmed.immuno;
 
-import cn.hutool.core.lang.Tuple;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.kingmed.immuno.common.EnumManager;
 import com.kingmed.immuno.common.MapperHelpper;
-import com.kingmed.immuno.consumer.RQConsumer;
-import com.kingmed.immuno.entity.*;
+import com.kingmed.immuno.entity.Device;
+import com.kingmed.immuno.entity.HeliosReagent;
+import com.kingmed.immuno.entity.LabOrder;
+import com.kingmed.immuno.entity.LabTask;
 import com.kingmed.immuno.mapper.*;
 import com.kingmed.immuno.model.dataModel.*;
 import com.kingmed.immuno.model.dataModel.dto.LabOrderTaskDO;
 import com.kingmed.immuno.model.dataModel.dto.VirtualMachine;
 import com.kingmed.immuno.model.dataModel.dto.VirtualSlide;
-import com.kingmed.immuno.model.producer.MyProducer;
-import com.kingmed.immuno.model.request.AuthRequest;
-import com.kingmed.immuno.model.request.UserQueryRequest;
 import com.kingmed.immuno.model.response.BaseResponse;
 import com.kingmed.immuno.service.LabOrderService;
-import com.kingmed.immuno.service.LabTaskAllocationService;
 import com.kingmed.immuno.service.factory.DeviceFactory;
 import com.kingmed.immuno.service.factory.HeliosReagentFactory;
 import com.kingmed.immuno.service.factory.KmcsUserFactory;
@@ -25,23 +21,15 @@ import com.kingmed.immuno.service.factory.LabOrderFactory;
 import com.kingmed.immuno.service.impl.*;
 import com.kingmed.immuno.util.ExcelGenerator;
 import com.kingmed.immuno.util.RedisUtil;
-import org.apache.rocketmq.client.exception.MQBrokerException;
-import org.apache.rocketmq.client.exception.MQClientException;
-import org.apache.rocketmq.remoting.exception.RemotingException;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -149,21 +137,7 @@ public class CreateDataTest {
         System.out.println("convertion completed .................................................");
     }
 
-    /**
-     * 创建检测批次后将labTask绑定到今日LabOrder上
-     */
-    @Test
-    public void testBindingTasks(){
-        LabUser user = new LabUser("-testing@bizOrgCode1","admin");
-        LabOrderTaskDO labOrderTaskDO = labOrderService.getTodayLabOrder(user);
-        System.out.println("被绑定的任务数量:"+labOrderTaskDO.getLabTasks().size());
-        if(labOrderTaskDO.getLabTasks().size()!=0) {
-            System.out.println(labOrderTaskDO.getLabTasks().get(0).toString() +
-                    labOrderTaskDO.getLabOrder().toString());
-        }
 
-
-    }
     /**
      * 按照批次处理LabTask——给LabTask分配对应的设备Device
      * 返回虚拟设备列表方便下一步 excel打印测试

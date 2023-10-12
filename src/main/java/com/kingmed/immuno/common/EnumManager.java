@@ -1,8 +1,5 @@
 package com.kingmed.immuno.common;
 
-import com.kingmed.immuno.entity.LabTask;
-import io.swagger.models.auth.In;
-
 public class  EnumManager{
     public enum LabTestItemMode {
         /**

@@ -1,10 +1,7 @@
 package com.kingmed.immuno.controller;
 
 import cn.hutool.core.lang.Tuple;
-import com.baomidou.mybatisplus.extension.api.R;
-import com.kingmed.immuno.common.MapperHelpper;
 import com.kingmed.immuno.entity.LabTask;
-import com.kingmed.immuno.mapper.LabTaskMapper;
 import com.kingmed.immuno.model.dataModel.LabUser;
 import com.kingmed.immuno.service.LabTaskService;
 import io.swagger.annotations.Api;

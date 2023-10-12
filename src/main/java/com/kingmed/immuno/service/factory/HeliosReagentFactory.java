@@ -1,13 +1,8 @@
 package com.kingmed.immuno.service.factory;
 
 import com.kingmed.immuno.entity.HeliosReagent;
-import com.kingmed.immuno.entity.LabOrder;
-import com.kingmed.immuno.model.dataModel.LabUser;
 import com.kingmed.immuno.util.DateTimeUtil;
-import io.swagger.models.auth.In;
 import org.springframework.stereotype.Component;
-
-import java.util.Date;
 
 @Component
 public class HeliosReagentFactory {

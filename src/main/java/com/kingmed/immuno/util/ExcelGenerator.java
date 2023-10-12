@@ -1,38 +1,28 @@
 package com.kingmed.immuno.util;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.poi.excel.RowUtil;
-import com.kingmed.immuno.entity.Device;
-import com.kingmed.immuno.entity.HeliosReagent;
-import com.kingmed.immuno.entity.LabOrder;
 import com.kingmed.immuno.entity.LabTask;
-import com.kingmed.immuno.mapper.DeviceMapper;
-import com.kingmed.immuno.mapper.HeliosReagentMapper;
-import com.kingmed.immuno.mapper.LabOrderMapper;
 import com.kingmed.immuno.model.dataModel.ExcelHeaderInfo;
 import com.kingmed.immuno.model.dataModel.dto.SampleBase;
 import com.kingmed.immuno.model.dataModel.dto.VirtualMachine;
 import com.kingmed.immuno.model.dataModel.dto.VirtualSlide;
 import com.kingmed.immuno.model.vo.HeliosLabTaskWithPostion;
-
-import lombok.NoArgsConstructor;
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellUtil;
 import org.apache.poi.ss.util.RegionUtil;
 import org.apache.poi.xssf.usermodel.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * 打印清单的工具类，用要打印的设备VirtualMachine进行初始化
+ */
 public class ExcelGenerator {
 
     // 先写死，后续再考虑扩展问题

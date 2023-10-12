@@ -9,7 +9,6 @@ import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWra
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kingmed.immuno.common.EnumManager;
 import com.kingmed.immuno.common.MapperHelpper;
-import com.kingmed.immuno.consumer.RQConsumer;
 import com.kingmed.immuno.entity.LabOrder;
 import com.kingmed.immuno.entity.LabTask;
 import com.kingmed.immuno.exception.ServiceException;
@@ -26,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

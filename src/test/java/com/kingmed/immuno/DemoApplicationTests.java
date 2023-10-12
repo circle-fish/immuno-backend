@@ -1,35 +1,22 @@
 package com.kingmed.immuno;
 
 import com.alibaba.fastjson.JSON;
-import com.kingmed.immuno.common.EnumManager;
 import com.kingmed.immuno.common.MapperHelpper;
 import com.kingmed.immuno.consumer.RQConsumer;
-import com.kingmed.immuno.entity.Device;
 import com.kingmed.immuno.entity.KmcsTask;
 import com.kingmed.immuno.entity.KmcsUser;
-import com.kingmed.immuno.entity.LabTask;
 import com.kingmed.immuno.mapper.DeviceMapper;
 import com.kingmed.immuno.mapper.KmcsTaskMapper;
 import com.kingmed.immuno.mapper.KmcsUserMapper;
 import com.kingmed.immuno.mapper.LabTaskMapper;
-import com.kingmed.immuno.model.dataModel.ConversionResult;
 import com.kingmed.immuno.model.producer.MyProducer;
 import com.kingmed.immuno.model.request.AuthRequest;
 import com.kingmed.immuno.model.request.UserQueryRequest;
-import com.kingmed.immuno.model.response.BaseResponse;
 import com.kingmed.immuno.service.factory.KmcsUserFactory;
 import com.kingmed.immuno.service.impl.KmcsServiceImpl;
 import com.kingmed.immuno.service.impl.KmcsUserServiceImpl;
 import com.kingmed.immuno.service.impl.LabTaskServiceImpl;
 import com.kingmed.immuno.service.impl.TaskConversionServiceImpl;
-import com.kingmed.immuno.util.DateTimeUtil;
-import com.kingmed.immuno.util.ExcelGenerator;
-import com.kingmed.immuno.util.JwtUtil;
-import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.ss.util.RegionUtil;
-import org.apache.poi.xssf.usermodel.*;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.remoting.exception.RemotingException;
@@ -38,20 +25,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = DemoApplication.class)

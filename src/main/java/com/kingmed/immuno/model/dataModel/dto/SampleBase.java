@@ -4,7 +4,6 @@ package com.kingmed.immuno.model.dataModel.dto;
 import com.kingmed.immuno.entity.BaseEntity;
 import com.kingmed.immuno.model.vo.HeliosLabTaskWithPostion;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**

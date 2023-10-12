@@ -1,8 +1,6 @@
 package com.kingmed.immuno.service.factory;
 
-import com.kingmed.immuno.entity.KmcsTask;
 import com.kingmed.immuno.entity.KmcsUser;
-import com.kingmed.immuno.entity.LabTestItem;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;

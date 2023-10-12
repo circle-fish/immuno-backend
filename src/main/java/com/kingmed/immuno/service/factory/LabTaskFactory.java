@@ -5,9 +5,7 @@ import com.kingmed.immuno.entity.HeliosReagent;
 import com.kingmed.immuno.entity.KmcsTask;
 import com.kingmed.immuno.entity.LabTask;
 import com.kingmed.immuno.entity.LabTestItem;
-import com.kingmed.immuno.model.dataModel.dto.LabTaskDO;
 import com.kingmed.immuno.model.dataModel.dto.VirtualMachine;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 @Component
 public class LabTaskFactory {

@@ -1,6 +1,5 @@
 package com.kingmed.immuno.model.request;
 
-import com.kingmed.immuno.entity.LabTask;
 import com.kingmed.immuno.model.dataModel.ExcelHeaderInfo;
 import com.kingmed.immuno.model.vo.HeliosLabTaskWithPostion;
 import lombok.AllArgsConstructor;

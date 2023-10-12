@@ -1,4 +1,4 @@
-package com.kingmed.immuno.interceptor;
+package com.kingmed.immuno.model.interceptor;
 
 import com.kingmed.immuno.common.CommonConstants;
 import com.kingmed.immuno.entity.KmcsUser;

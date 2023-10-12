@@ -2,7 +2,6 @@ package com.kingmed.immuno.consumer;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.kingmed.immuno.service.factory.KmFactory;
 import com.kingmed.immuno.common.MapperHelpper;
 import com.kingmed.immuno.consumer.model.KmAppInfo;
 import com.kingmed.immuno.entity.KmcsTask;
@@ -10,6 +9,7 @@ import com.kingmed.immuno.entity.LabTask;
 import com.kingmed.immuno.mapper.KmcsTaskMapper;
 import com.kingmed.immuno.model.dataModel.ConversionResult;
 import com.kingmed.immuno.model.response.BaseResponse;
+import com.kingmed.immuno.service.factory.KmFactory;
 import com.kingmed.immuno.service.impl.TaskConversionServiceImpl;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;

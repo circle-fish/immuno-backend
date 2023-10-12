@@ -3,9 +3,7 @@ package com.kingmed.immuno.common;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.kingmed.immuno.entity.BaseEntity;
 import com.kingmed.immuno.entity.KmcsTask;
-import com.kingmed.immuno.entity.KmcsUser;
 import com.kingmed.immuno.mapper.KmcsTaskMapper;
-import com.kingmed.immuno.mapper.KmcsUserMapper;
 import org.springframework.stereotype.Component;
 @Component
 public class MapperHelpper {

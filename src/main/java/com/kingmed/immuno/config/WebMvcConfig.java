@@ -1,6 +1,6 @@
 package com.kingmed.immuno.config;
 
-import com.kingmed.immuno.interceptor.HeaderInterceptor;
+import com.kingmed.immuno.model.interceptor.HeaderInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;

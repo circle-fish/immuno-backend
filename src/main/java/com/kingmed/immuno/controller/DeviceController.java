@@ -1,7 +1,6 @@
 package com.kingmed.immuno.controller;
 
 import com.kingmed.immuno.entity.Device;
-import com.kingmed.immuno.entity.HeliosReagent;
 import com.kingmed.immuno.service.DeviceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
