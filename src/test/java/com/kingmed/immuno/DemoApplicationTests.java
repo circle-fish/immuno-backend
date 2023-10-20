@@ -72,7 +72,7 @@ public class DemoApplicationTests {
 
     }
     @Test
-    public void testMessageFlow() throws IOException, MQBrokerException, RemotingException, InterruptedException, MQClientException {
+    public void testMessageFlow() throws IOException, RemotingException, InterruptedException, MQClientException {
 
 
         KmcsTask kmcsTask = kmcsTaskMapper.selectById("testing@taskId--1");
