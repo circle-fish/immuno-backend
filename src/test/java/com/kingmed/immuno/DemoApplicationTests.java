@@ -1,22 +1,19 @@
 package com.kingmed.immuno;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.kingmed.immuno.common.EnumManager;
 import com.kingmed.immuno.common.MapperHelpper;
-import com.kingmed.immuno.consumer.RQConsumer;
 import com.kingmed.immuno.entity.KmcsTask;
 import com.kingmed.immuno.entity.KmcsUser;
-import com.kingmed.immuno.mapper.DeviceMapper;
-import com.kingmed.immuno.mapper.KmcsTaskMapper;
-import com.kingmed.immuno.mapper.KmcsUserMapper;
-import com.kingmed.immuno.mapper.LabTaskMapper;
-import com.kingmed.immuno.model.producer.MyProducer;
+import com.kingmed.immuno.entity.LabTask;
+import com.kingmed.immuno.mapper.*;
 import com.kingmed.immuno.model.request.AuthRequest;
 import com.kingmed.immuno.model.request.UserQueryRequest;
+import com.kingmed.immuno.model.response.StatusChangeResponse;
 import com.kingmed.immuno.service.factory.KmcsUserFactory;
-import com.kingmed.immuno.service.impl.KmcsServiceImpl;
-import com.kingmed.immuno.service.impl.KmcsUserServiceImpl;
-import com.kingmed.immuno.service.impl.LabTaskServiceImpl;
-import com.kingmed.immuno.service.impl.TaskConversionServiceImpl;
+import com.kingmed.immuno.service.impl.*;
+import net.minidev.asm.ex.NoSuchFieldException;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.remoting.exception.RemotingException;
@@ -29,9 +26,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -45,19 +41,15 @@ public class DemoApplicationTests {
     @Autowired
     private DeviceMapper deviceMapper;
     @Autowired
+    private LabTaskMapper labTaskMapper;
+    @Autowired
     private KmcsUserMapper kmcsUserMapper;
     @Autowired
     private MapperHelpper mapperHelpper;
     @Autowired
-    private MyProducer myProducer;
-    @Autowired
-    private RQConsumer rqConsumer;
-
-    @Autowired
-    private LabTaskMapper labTaskMapper;
-
-    @Autowired
     private KmcsTaskMapper kmcsTaskMapper;
+    @Autowired
+    private HeliosAiTaskMapper heliosAiTaskMapper;
 
     @Autowired
     private KmcsServiceImpl kmcsService;
@@ -65,34 +57,27 @@ public class DemoApplicationTests {
     private KmcsUserServiceImpl kmcsUserService;
     @Autowired
     private LabTaskServiceImpl labTaskService;
+    @Autowired
+    private BaseApiServiceImpl baseApiService;
 
-    public String read(String addr) throws IOException {
-        FileReader fileReader = new FileReader(addr);
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
+    @Test
+    public void testAny() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
 
-        StringBuilder stringBuilder = new StringBuilder();
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            stringBuilder.append(line);
-            stringBuilder.append(System.lineSeparator());
-        }
+        System.out.println(EnumManager.LabTaskStatus.valueOf("inited").getValue());
+        System.out.println(StatusChangeResponse.getStatusChangeResult(EnumManager.LabTaskStatus.inited));
+        QueryWrapper<LabTask> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id",186).last("for update");
+        LabTask labTask = labTaskMapper.selectOne(queryWrapper);
+        System.out.println(labTask);
 
-        bufferedReader.close();
-        fileReader.close();
-
-        return stringBuilder.toString();
     }
     @Test
     public void testMessageFlow() throws IOException, MQBrokerException, RemotingException, InterruptedException, MQClientException {
 
-//        String message = read("D:\\work\\projects\\kmcs-demo\\demo2\\immuno-backend\\src\\main\\resources\\KmcsData.txt");
-//        myProducer.send(message);
+
         KmcsTask kmcsTask = kmcsTaskMapper.selectById("testing@taskId--1");
         System.out.println(kmcsTask.getVersion());
-//        kmcsTask.setUpdatedBy("testing-updater");
-//        kmcsTaskMapper.updateById(kmcsTask);
-//        System.out.println(kmcsTask.getVersion());
-        System.out.println(kmcsTask.toString());
+        System.out.println(kmcsTask);
 
     }
 
@@ -105,6 +90,7 @@ public class DemoApplicationTests {
 
     @Test
     public void testPostRequest() {
+
         String url = "http://kmcs-ft.kingmed.com.cn:8070/km-platform-web/restful/thridAuth";
         AuthRequest authRequest = new AuthRequest(
                 "K000127",
@@ -116,8 +102,14 @@ public class DemoApplicationTests {
 
         ResponseEntity<String> response = kmcsService.getAuthResponseFromKmcs(authRequest, url, headers);
         System.out.println(JSON.toJSONString(response.getBody()));
+
     }
 
+    /**
+     * 对登录流程测试
+     * @throws IOException
+     * @throws NoSuchFieldException
+     */
     @Test
     public void testAuthProcess() throws IOException, NoSuchFieldException {
         KmcsUser testUser = kmcsUserFactory.createKmcsUser(
@@ -149,6 +141,12 @@ public class DemoApplicationTests {
         System.out.println("用户岗位名称 " + testOrgCode);
     }
 
+    /**
+     * 登录中对缓存的用户信息测试-
+     * 更新缓存用户的token
+     * @throws IOException
+     * @throws NoSuchFieldException
+     */
     @Test
     public void testLoginQuery() throws IOException, NoSuchFieldException {
         UserQueryRequest userQueryRequest = new UserQueryRequest(
@@ -179,8 +177,21 @@ public class DemoApplicationTests {
         Assert.assertEquals(testUser.getId(), retUser.getId());
         System.out.println("更新后token返回retUser的token：" + retUser.getToken());
         System.out.println("更新后token返回testUser的token：" + testUser.getToken());
+    }
+    @Test
+    public void testBaseApiService() {
+        baseApiService.setBaseUrl("http://kmcs-ft.kingmed.com.cn:8070/km-platform-web");
+        String pathUrl = "/restful/thridAuth";
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("serviceid", "login");
+        AuthRequest authRequest = new AuthRequest(
+                "K000127",
+                "a123456",
+                "KMCS"
+        );
+        String resp = baseApiService.execAndReturn(pathUrl,headers,authRequest,String.class);
+        System.out.println(resp);
 
     }
-
 
 }

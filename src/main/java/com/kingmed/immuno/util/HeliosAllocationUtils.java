@@ -17,7 +17,7 @@ import java.util.List;
  * 任务分配的工具类，添加sample任务和qc任务到Slide中
  */
 
-public class heliosAllocationUtils {
+public class HeliosAllocationUtils {
 
     public static List<LabTask>  addQCToSlide(VirtualSlide virtualSlide,
                                               List<String> qcNames,
@@ -70,6 +70,14 @@ public class heliosAllocationUtils {
             virtualSlide.addSample(virtualLabTask);
             counter.add();
         }
+    }
+    public static List<Integer> ParseDevicePosition(String position){
+        String[] devicePosition = position.split("-");
+        List<Integer> devicePositionArray = new ArrayList<>();
+        for(int i = 0 ; i < devicePosition.length; i++){
+            devicePositionArray.add( Integer.parseInt(devicePosition[i]));
+        }
+        return devicePositionArray;
     }
 
 }

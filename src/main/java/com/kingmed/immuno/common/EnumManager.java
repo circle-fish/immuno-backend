@@ -98,6 +98,19 @@ public class  EnumManager{
             return value;
         }
     }
+    public enum HeliosAITaskStatus{
+        /**
+         * 存储Helios的AI任务状态
+         */
+        inited(0),uploaded(1),finished(2);
+        private Integer value;
+        HeliosAITaskStatus(Integer value){
+            this.value = value;
+        }
+        public Integer getValue() {
+            return value;
+        }
+    }
 
 
 }

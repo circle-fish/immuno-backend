@@ -21,6 +21,7 @@ import com.kingmed.immuno.service.factory.LabOrderFactory;
 import com.kingmed.immuno.service.impl.*;
 import com.kingmed.immuno.util.ExcelGenerator;
 import com.kingmed.immuno.util.RedisUtil;
+import net.minidev.asm.ex.NoSuchFieldException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,22 +95,22 @@ public class CreateDataTest {
         return stringBuilder.toString();
     }
 
+    /**
+     * 创建测试所需的设备和试剂信息
+     * 批次相关信息在调用labOrderService会自动创建，不需要创建
+     * @throws IOException
+     */
     @Test
     public void testCreateData() throws IOException {
-        LabUser  user = new LabUser("-testing@bizOrgCode1","admin");
         //needed data
         HeliosReagent heliosReagent = heliosReagentFactory.createHeliosReagent("-testing@bizOrgCode1",1);
-//        LabOrder labOrder = labOrderService.checkTodayLabOrder(user);
         Device device = deviceFactory.createDevice("-testing@bizOrgCode1", 1);
         //plug in
         mapperHelpper.upsert(heliosReagent,heliosReagentMapper);
-//        mapperHelpper.upsert(labOrder,labOrderMapper);
         mapperHelpper.upsert(device,deviceMapper);
-
         System.out.printf("测试数据创建成功:" +
                         "\n %s\n %s\n",
                 heliosReagent, device);
-
     }
     /**
      * 把KmcsTasks转换为LabTasks

@@ -225,7 +225,7 @@ public class LabOrderServiceImpl implements LabOrderService {
         /**
          * 需要对符合条件的行数据进行加锁，防止其他的用户操作
          * 如何加锁能满足安全和负载均衡???
-         * 此处加for update
+         * 此处加wrapper.last("for update")等价余python的 with_for_update
          */
 
         List<LabOrder> labOrders = labOrderMapper.selectList(labOrderQueryWrapper);

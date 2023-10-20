@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.kingmed.immuno.entity.HeliosAiTask;
+import com.kingmed.immuno.entity.HeliosImage;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,4 +24,5 @@ public interface HeliosAiTaskMapper  extends BaseMapper<HeliosAiTask>{
      * @return 分页对象列表
      */
     IPage<HeliosAiTask> selectByPage(IPage<HeliosAiTask> page , @Param(Constants.WRAPPER) Wrapper<HeliosAiTask> wrapper);
+
 }

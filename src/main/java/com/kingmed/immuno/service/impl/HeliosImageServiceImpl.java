@@ -2,15 +2,23 @@ package com.kingmed.immuno.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.kingmed.immuno.common.CommonConstants;
 import com.kingmed.immuno.entity.HeliosImage;
+import com.kingmed.immuno.entity.LabTask;
 import com.kingmed.immuno.mapper.HeliosImageMapper;
 import com.kingmed.immuno.service.HeliosImageService;
+import com.kingmed.immuno.service.factory.HeliosImageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
- /**
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
  * ;(helios_image)表服务实现类
  * @author : http://www.chiner.pro
  * @date : 2023-8-11
@@ -19,7 +27,8 @@ import org.springframework.stereotype.Service;
 public class HeliosImageServiceImpl implements HeliosImageService{
     @Autowired
     private HeliosImageMapper heliosImageMapper;
-    
+    @Autowired
+    private HeliosImageFactory heliosImageFactory;
     /** 
      * 通过ID查询单条数据 
      *
@@ -92,8 +101,8 @@ public class HeliosImageServiceImpl implements HeliosImageService{
         //3. 返回结果
         return pagin;
     }
-    
-    /** 
+
+    /**
      * 新增数据
      *
      * @param heliosImage 实例对象
@@ -103,8 +112,8 @@ public class HeliosImageServiceImpl implements HeliosImageService{
         heliosImageMapper.insert(heliosImage);
         return heliosImage;
     }
-    
-    /** 
+
+    /**
      * 更新数据
      *
      * @param heliosImage 实例对象
@@ -165,8 +174,8 @@ public class HeliosImageServiceImpl implements HeliosImageService{
             return heliosImage;
         }
     }
-    
-    /** 
+
+    /**
      * 通过主键删除数据
      *
      * @param id 主键
@@ -176,4 +185,73 @@ public class HeliosImageServiceImpl implements HeliosImageService{
         int total = heliosImageMapper.deleteById(id);
         return total > 0;
     }
+
+    public List<HeliosImage> upsertHeliosImageByLabTask(
+            LabTask labTask,
+            String operatorName
+    ){
+        List<HeliosImage> heliosImageList = new ArrayList<>();
+        for(int i = 0 ; i < CommonConstants.NUM_IMAGE ; i++){
+            HeliosImage heliosImage = getExistedHeliosImageByLabTask(labTask, i);
+            if(heliosImage!=null){
+                heliosImage = heliosImageFactory.createHeliosImageByLabTask(labTask,i,operatorName);
+            }
+            heliosImageList.add(heliosImage);
+        }
+        return heliosImageList;
+    }
+
+    /**
+     * 通过LabTask获取HeliosImage,
+     * 一般来说device_id, slide, well, index这几个指标确定唯一的图片
+     * @param labTask
+     * @param index
+     * @return
+     */
+    private HeliosImage getExistedHeliosImageByLabTask(LabTask labTask, int index) {
+        String []indexStrArray = labTask.getDevicePosition().split("-");
+        int slideIndex = Integer.parseInt(indexStrArray[1]);
+        int wellIndex = Integer.parseInt(indexStrArray[2]);
+        int deviceId = Integer.parseInt(indexStrArray[0]);
+
+        HeliosImage heliosImage = getExistedHeliosImage(
+                labTask.getId(),
+                labTask.getBizOrgCode(),
+                deviceId,
+                slideIndex,
+                wellIndex,
+                index
+        );
+        return heliosImage;
+    }
+
+    /**
+     * 通过参数中的条件去查找是否存在对应的HeliosImage
+     * @param labTaskId
+     * @param bizOrgCode
+     * @param deviceId
+     * @param slideIndex
+     * @param wellIndex
+     * @param index
+     * @return 对应的HeliosImage图像
+     */
+    private HeliosImage getExistedHeliosImage(Integer labTaskId,
+                                              String bizOrgCode,
+                                              int deviceId,
+                                              int slideIndex,
+                                              int wellIndex,
+                                              int index)
+    {
+        QueryWrapper<HeliosImage> heliosImageQueryWrapper = new QueryWrapper<>();
+        heliosImageQueryWrapper.eq("lab_task_id",labTaskId)
+                .eq("biz_org_code",bizOrgCode)
+                .eq("device_id",deviceId)
+                .eq("slide",slideIndex)
+                .eq("well",wellIndex)
+                .last("for update");
+        HeliosImage heliosImage = heliosImageMapper.selectList(heliosImageQueryWrapper).get(0);
+        return heliosImage;
+
+    }
+
 }

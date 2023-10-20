@@ -23,4 +23,6 @@ public interface HeliosImageMapper  extends BaseMapper<HeliosImage>{
      * @return 分页对象列表
      */
     IPage<HeliosImage> selectByPage(IPage<HeliosImage> page , @Param(Constants.WRAPPER) Wrapper<HeliosImage> wrapper);
+
+
 }

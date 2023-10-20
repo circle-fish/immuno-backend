@@ -20,7 +20,7 @@ import com.kingmed.immuno.model.dataModel.dto.VirtualMachine;
 import com.kingmed.immuno.model.dataModel.dto.VirtualSlide;
 import com.kingmed.immuno.model.vo.HeliosLabTaskWithPostion;
 import com.kingmed.immuno.service.LabTaskAllocationService;
-import com.kingmed.immuno.util.heliosAllocationUtils;
+import com.kingmed.immuno.util.HeliosAllocationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,7 +99,7 @@ public class LabTaskAllocationServiceImpl implements LabTaskAllocationService {
              */
             if (!nextVirtualMachine.hasQc()) {
 
-                List<LabTask> qcAddToSlideList = heliosAllocationUtils.addQCToSlide(virtualSlide, QC_NAMES, numQc,
+                List<LabTask> qcAddToSlideList = HeliosAllocationUtils.addQCToSlide(virtualSlide, QC_NAMES, numQc,
                         nextLabTask, nextVirtualMachine, heliosReagent, operatorName);
 
                 for(LabTask qcTask : qcAddToSlideList ) {
@@ -110,7 +110,7 @@ public class LabTaskAllocationServiceImpl implements LabTaskAllocationService {
                     }
                 }
             }
-            heliosAllocationUtils.addSampleToSlide(virtualSlide, nextVirtualMachine, heliosReagent, nextLabTask, labTaskIndex);
+            HeliosAllocationUtils.addSampleToSlide(virtualSlide, nextVirtualMachine, heliosReagent, nextLabTask, labTaskIndex);
 
             nextVirtualMachine.addSlide(virtualSlide);
             virtualMachineIndex.resetAdd();

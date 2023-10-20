@@ -2,6 +2,7 @@ package com.kingmed.immuno.controller;
 
 import cn.hutool.core.lang.Tuple;
 import com.kingmed.immuno.entity.LabTask;
+import com.kingmed.immuno.mapper.LabTaskMapper;
 import com.kingmed.immuno.model.dataModel.LabUser;
 import com.kingmed.immuno.service.LabTaskService;
 import io.swagger.annotations.Api;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
  /**
@@ -23,6 +25,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/labTask")
 public class LabTaskController{
+    @Autowired
+    private LabTaskMapper labTaskMapper;
     @Autowired
     private LabTaskService labTaskService;
 
@@ -112,16 +116,37 @@ public class LabTaskController{
         return ResponseEntity.ok(labTaskService.deleteById(id));
     }
 
+
     public ResponseEntity<Tuple> initTasksForInterface(){return ResponseEntity.ok(labTaskService.initTasksForInterFace());}
 
-     public ResponseEntity<Tuple> layAsideLabTasks(List<LabTask> labTasks){
-        return ResponseEntity.ok(labTaskService.layAsideLabTask(labTasks));
+     /**
+      * 搁置任务列表
+      * @param labTaskIds 搁置任务的id
+      * @return 搁置后返回任务状态为inited和unhandled的LabTasks
+      */
+     @ApiOperation("搁置任务列表")
+     @PostMapping("/layAsideLabTasks")
+     public ResponseEntity<Tuple> layAsideLabTasks( @RequestBody  List<Integer> labTaskIds){
+         List<LabTask> labTasks = new ArrayList<>();
+         for(Integer id : labTaskIds) {
+             labTasks.add(labTaskMapper.selectById(id));
+         }
+         return ResponseEntity.ok(labTaskService.layAsideLabTask(labTasks));
      }
 
-
-     public ResponseEntity<Tuple> bringIntoLabTasks(List<LabTask> labTasks, LabUser labUser){
-        return ResponseEntity.ok((labTaskService.bringIntoLabTask(labTasks,labUser)));
+     /**
+      * 纳入任务列表
+      * @param labTaskIds
+      * @param labUser
+      * @return
+      */
+     @ApiOperation("纳入任务列表")
+     @PostMapping("/bringIntoLabTasks")
+     public ResponseEntity<Tuple> bringIntoLabTasks(List<Integer> labTaskIds, LabUser labUser){
+         List<LabTask> labTasks = new ArrayList<>();
+         for(Integer id : labTaskIds) {
+             labTasks.add(labTaskMapper.selectById(id));
+         }
+         return ResponseEntity.ok((labTaskService.bringIntoLabTask(labTasks,labUser)));
      }
-
-
 }

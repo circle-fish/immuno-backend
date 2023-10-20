@@ -40,7 +40,7 @@ public class HeliosImage extends BaseEntity{
     /** 项目名称 */
     @ApiModelProperty(name = "",notes = "项目名称")
     private String labTestItemName ;
-    /** 与其绑定的KmcsTaskTask的Id */
+    /** 与其绑定的KmcsTask的Id */
     @ApiModelProperty(name = "",notes = "与其绑定的KmcsTaskTask的Id")
     private String kmcsTaskId ;
     /** 是否绑定到KmcsTask上 */

@@ -2,6 +2,7 @@ package com.kingmed.immuno.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kingmed.immuno.entity.HeliosAiTask;
+import com.kingmed.immuno.entity.HeliosImage;
 
 /**
  * ;(helios_ai_task)表服务接口
@@ -48,4 +49,12 @@ public interface HeliosAiTaskService{
      * @return 是否成功
      */
     boolean deleteById(Long id);
+
+    /**
+     * 插入或更新HeliosAITask
+     * @param heliosImage
+     * @param operatorName
+     * @return
+     */
+    HeliosAiTask upsertHeliosAiTask(HeliosImage heliosImage, String operatorName);
 }

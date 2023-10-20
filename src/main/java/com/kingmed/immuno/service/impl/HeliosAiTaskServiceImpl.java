@@ -2,12 +2,15 @@ package com.kingmed.immuno.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kingmed.immuno.entity.HeliosAiTask;
+import com.kingmed.immuno.entity.HeliosImage;
 import com.kingmed.immuno.mapper.HeliosAiTaskMapper;
 import com.kingmed.immuno.service.HeliosAiTaskService;
+import com.kingmed.immuno.service.factory.HeliosAiTaskFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
  /**
@@ -19,6 +22,8 @@ import org.springframework.stereotype.Service;
 public class HeliosAiTaskServiceImpl implements HeliosAiTaskService{
     @Autowired
     private HeliosAiTaskMapper heliosAiTaskMapper;
+    @Autowired
+    private HeliosAiTaskFactory heliosAiTaskFactory;
     
     /** 
      * 通过ID查询单条数据 
@@ -116,4 +121,25 @@ public class HeliosAiTaskServiceImpl implements HeliosAiTaskService{
         int total = heliosAiTaskMapper.deleteById(id);
         return total > 0;
     }
-}
+
+     /**
+      * 插入或更新HeliosAITask
+      *
+      * @param heliosImage
+      * @param operatorName
+      * @return
+      */
+     @Override
+     public HeliosAiTask upsertHeliosAiTask(HeliosImage heliosImage, String operatorName) {
+         QueryWrapper<HeliosAiTask> queryWrapper = new QueryWrapper<>();
+         queryWrapper.eq("helios_image_id",heliosImage.getId())
+                 .last("for update");
+         HeliosAiTask heliosAiTask = heliosAiTaskMapper.selectOne(queryWrapper);
+         if(heliosAiTask == null ){
+             heliosAiTask = heliosAiTaskFactory.createHeliosAiTaskByHeliosImage(heliosImage,operatorName);
+         }else{
+             heliosAiTask =heliosAiTaskFactory.updateHeliosAiTaskByHeliosImage(heliosAiTask,heliosImage);
+         }
+         return heliosAiTask;
+     }
+ }

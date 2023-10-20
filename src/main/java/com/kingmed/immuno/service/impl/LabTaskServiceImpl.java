@@ -7,8 +7,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.kingmed.immuno.common.CommonConstants;
 import com.kingmed.immuno.common.EnumManager;
 import com.kingmed.immuno.common.MapperHelpper;
+import com.kingmed.immuno.entity.HeliosAiTask;
+import com.kingmed.immuno.entity.HeliosImage;
 import com.kingmed.immuno.entity.LabTask;
 import com.kingmed.immuno.exception.ServiceException;
 import com.kingmed.immuno.mapper.LabTaskMapper;
@@ -17,6 +20,7 @@ import com.kingmed.immuno.service.LabTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +36,10 @@ public class LabTaskServiceImpl implements LabTaskService{
     private MapperHelpper mapperHelpper;
     @Autowired
     private LabOrderServiceImpl labOrderService;
-    
+    @Autowired
+    private HeliosImageServiceImpl heliosImageService;
+    @Autowired
+    private HeliosAiTaskServiceImpl heliosAiTaskService;
     /** 
      * 通过ID查询单条数据 
      *
@@ -193,7 +200,8 @@ public class LabTaskServiceImpl implements LabTaskService{
 
     /**
      * 搁置任务，修改选中的“LabTask”的“status”为“UNHANDLED”
-     * ，并进行刷新操作
+     * 搁置条件：仅限于小于allocated的任务状态，分配设备后无法再搁置
+     * 并进行刷新操作
      *
      * @param labTasks
      * @return 搁置后返回任务状态为inited和unhandled的LabTasks
@@ -201,7 +209,12 @@ public class LabTaskServiceImpl implements LabTaskService{
     @Override
     public Tuple layAsideLabTask(List<LabTask> labTasks) {
         for(LabTask labTask : labTasks){
+            if(EnumManager.LabTaskStatus.valueOf(labTask.getStatus()).getValue() >=
+                    EnumManager.LabTaskStatus.allocated.getValue()){
+                break;
+            }
             labTask.setStatus(EnumManager.LabTaskStatus.unhandled.toString());
+            labTask.setLabOrderId(0);
             labTaskMapper.updateById(labTask);
         }
         return initTasksForInterFace();
@@ -217,6 +230,9 @@ public class LabTaskServiceImpl implements LabTaskService{
     @Override
     public Tuple bringIntoLabTask(List<LabTask> labTasks, LabUser labUser) {
         for(LabTask labTask : labTasks){
+            if(labTask.getStatus() != EnumManager.LabTaskStatus.unhandled.toString()){
+                break;
+            }
             labTask.setStatus(EnumManager.LabTaskStatus.inited.toString());
             labTask.setLabOrderId(labOrderService.checkTodayLabOrder(labUser).getId());
             labTaskMapper.updateById(labTask);
@@ -231,12 +247,46 @@ public class LabTaskServiceImpl implements LabTaskService{
     @Override
     public LabTask upsert(LabTask labTask) {
         int res = mapperHelpper.upsert(labTask,labTaskMapper);
-        if(res > 0)
-        {
+        if(res > 0) {
             return labTask;
         }else{
             throw new ServiceException("LabTask 的upsert失败！ id: "+ labTask.getId());
         }
+    }
+
+    @Override
+    public LabTask convertStatusToTesting(LabTask labTask, String operatorName) {
+        labTask.setStatus(EnumManager.LabTaskStatus.testing.toString());
+        labTask.setUpdatedBy(operatorName);
+        /**
+         * 4. 根据项目类型做一些特殊处理
+         */
+        if (labTask.getDeviceType() == EnumManager.DeviceType.helios.getValue()){
+            /**
+             * 4.1 生成helios_image
+             */
+            List<HeliosImage> heliosImageList = heliosImageService.upsertHeliosImageByLabTask(labTask,operatorName);
+            /**
+             * 4.2 生成heliosAiTask
+             */
+            if(CommonConstants.AI_TASK_RELATED_TEST_ITEM_TYPE_LIST.contains(labTask.getLabTestItemName())){
+                List<HeliosAiTask> heliosAiTasks =new ArrayList<>();
+                for(HeliosImage heliosImage : heliosImageList){
+                    HeliosAiTask heliosAiTask = heliosAiTaskService.upsertHeliosAiTask(heliosImage,operatorName);
+                    heliosAiTasks.add(heliosAiTask);
+                }
+                /**
+                 * 4.3 向 HeliosAiInferenceService中加入任务
+                 * ??? HeliosAiInferenceService尚未实现 - 负责平台接口调用、线程管理与数据持久化ai结果到
+                 * 线程管理部分考虑实现的必要性 - 是否都默认单线程完成
+                 *
+                 */
+//                heliosAiService.addTasks(heliosAiTasks);
+            }
+
+
+        }
+        return labTask;
     }
 
 

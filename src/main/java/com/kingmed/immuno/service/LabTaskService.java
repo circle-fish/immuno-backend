@@ -75,4 +75,14 @@ public interface LabTaskService{
     Tuple bringIntoLabTask(List<LabTask> labTasks, LabUser labUser);
 
     LabTask upsert(LabTask labTask);
+
+    /**
+     * 修改状态至testing状态, 并进行一些后续处理
+     * @param labTask
+     * @param operatorName
+     * @return 修改后的任务
+     */
+    LabTask convertStatusToTesting(LabTask labTask, String operatorName);
+
+
 }
