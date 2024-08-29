@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * ;
+ * 从KmcsTask转换得来的，用于任务分配等后续操作的的任务信息封装类
  * @author : http://www.chiner.pro
  * @date : 2023-8-25
  */

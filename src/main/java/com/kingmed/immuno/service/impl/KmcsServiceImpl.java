@@ -30,11 +30,12 @@ import java.util.Map;
 @Service
 public class KmcsServiceImpl implements KmcsService {
 
-    /*
+    /**
      *对应子公司的用户信息缓存
+     * ？？？存在redis校验
      */
     private Map<String,KmcsUser> userMap = new HashMap<>();
-    /*
+    /**
      *访问外部接口的工具类
      */
     @Autowired

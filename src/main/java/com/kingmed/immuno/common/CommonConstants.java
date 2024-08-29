@@ -24,13 +24,16 @@ public interface CommonConstants {
     Integer IN_USE = 1;
 
     Integer NUM_IMAGE = 3;
-    /*
-    * kmcs平台上传文件使用的upload_channel
-    */
+    /**
+     * kmcs平台上传文件使用的upload_channel
+     */
 
     String UPLOAD_CHANNEL = "immuno_sys";
 
 
+    /**
+     * 质控任务类型，qc和nc各做一次
+     */
     List<String> QC_NAMES = Arrays.asList("qc", "nc");
     List<String> AI_TASK_RELATED_TEST_ITEM_TYPE_LIST = Arrays.asList("ANA");
 }

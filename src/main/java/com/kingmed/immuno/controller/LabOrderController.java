@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
  /**
- * ;(lab_order)表控制层
+ * (lab_order)表控制层
  * @author : http://www.chiner.pro
  * @date : 2023-8-11
  */
@@ -33,8 +33,8 @@ public class LabOrderController{
      * @return 实例对象
      */
     @ApiOperation("通过ID查询单条数据")
-    @GetMapping("{id}")
-    public ResponseEntity<LabOrder> queryById(Integer id){
+    @GetMapping("getById/{id}")
+    public ResponseEntity<LabOrder> queryById(@PathVariable("id") Integer id){
         return ResponseEntity.ok(labOrderService.queryById(id));
     }
     

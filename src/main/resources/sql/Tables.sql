@@ -1,3 +1,4 @@
+##生成基础表结构的sql文件
 DROP TABLE IF EXISTS device;
 CREATE TABLE device(
     `id` INT NOT NULL AUTO_INCREMENT  COMMENT '' ,

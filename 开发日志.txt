@@ -190,3 +190,21 @@ redis 使用
         针对验证后accountId输入，在controller层添加参数
         对数据批量的sql语句生成数据以及测试 -- createTestData部分如何执行
         特别说明LabOrder只考虑当天问题。
+
+10.17 -  10.19
+    problems:
+        1.查询岗位获取accountId（token）的后续验证方式
+        2.需要postman排查测试controller层接口，定好规范
+    solutions:
+         1.对token后续验证的一个想法：
+           在LabUser加入Token值来验证用户有效期eTestData部分如何执行
+         2.部分结果例如convertStatusToTesting接口等在postman调用参数测试时出现:
+          java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax;
+          可能原因-缺少数据，一些有数据的表进行mybatis的查询不会出错
+          暂时搁置
+
+10.27
+
+        1.待做任务列表搁置不限时间 - unhandled
+        2.今日任务导致 -- 日期冲突 ， 未搁置的前天任务第二天查不到
+        3.目前分配针对所有初始化inited的任务

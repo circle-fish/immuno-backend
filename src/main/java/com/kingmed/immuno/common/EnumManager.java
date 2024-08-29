@@ -1,5 +1,8 @@
 package com.kingmed.immuno.common;
 
+/**
+ * 存储枚举常量，如状态，类型，转换模式等等
+ */
 public class  EnumManager{
     public enum LabTestItemMode {
         /**

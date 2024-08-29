@@ -31,8 +31,8 @@ public class LabTestItemController{
      * @return 实例对象
      */
     @ApiOperation("通过ID查询单条数据")
-    @GetMapping("{id}")
-    public ResponseEntity<LabTestItem> queryById(Integer id){
+    @GetMapping("getById/{id}")
+    public ResponseEntity<LabTestItem> queryById(@PathVariable("id") Integer id){
         return ResponseEntity.ok(labTestItemService.queryById(id));
     }
     

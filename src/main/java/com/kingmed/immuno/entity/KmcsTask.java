@@ -14,7 +14,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * ;
+ * Kmcs系统任务的详细信息，用于任务接收和项目转换，
+ * 后续转换成LabTask
  * @author : http://www.chiner.pro
  * @date : 2023-8-25
  */

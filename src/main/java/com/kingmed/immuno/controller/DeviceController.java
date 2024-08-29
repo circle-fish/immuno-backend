@@ -31,8 +31,8 @@ public class DeviceController{
      * @return 实例对象
      */
     @ApiOperation("通过ID查询单条数据")
-    @GetMapping("{id}")
-    public ResponseEntity<Device> queryById(Integer id){
+    @GetMapping("getById/{id}")
+    public ResponseEntity<Device> queryById(@PathVariable("id") Integer id){
         return ResponseEntity.ok(deviceService.queryById(id));
     }
     
@@ -66,7 +66,7 @@ public class DeviceController{
      * @return 实例对象
      */
     @ApiOperation("新增数据")
-    @PostMapping
+    @PostMapping("/addDevice")
     public ResponseEntity<Device> add(Device device){
         return ResponseEntity.ok(deviceService.insert(device));
     }

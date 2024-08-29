@@ -249,7 +249,8 @@ public class HeliosImageServiceImpl implements HeliosImageService{
                 .eq("slide",slideIndex)
                 .eq("well",wellIndex)
                 .last("for update");
-        HeliosImage heliosImage = heliosImageMapper.selectList(heliosImageQueryWrapper).get(0);
+
+        HeliosImage heliosImage = heliosImageMapper.selectOne(heliosImageQueryWrapper);
         return heliosImage;
 
     }

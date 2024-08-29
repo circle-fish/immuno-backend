@@ -40,6 +40,8 @@ public class LabTaskServiceImpl implements LabTaskService{
     private HeliosImageServiceImpl heliosImageService;
     @Autowired
     private HeliosAiTaskServiceImpl heliosAiTaskService;
+    @Autowired
+    private HeliosAiInferenceServiceImpl heliosAiInferenceService;
     /** 
      * 通过ID查询单条数据 
      *
@@ -281,7 +283,7 @@ public class LabTaskServiceImpl implements LabTaskService{
                  * 线程管理部分考虑实现的必要性 - 是否都默认单线程完成
                  *
                  */
-//                heliosAiService.addTasks(heliosAiTasks);
+                heliosAiInferenceService.addTasks(heliosAiTasks);
             }
 
 

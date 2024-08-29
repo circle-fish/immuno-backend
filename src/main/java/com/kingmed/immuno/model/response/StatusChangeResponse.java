@@ -24,21 +24,6 @@ public class StatusChangeResponse {
     private boolean success = false;
     private String message = "";
 
-//    public static final Map<EnumManager.LabTaskStatus, Method>
-//            statusChangeMap = new HashMap<>();
-//    static {
-//
-//        statusChangeMap.put(EnumManager.LabTaskStatus.inited, initedStatusHandler());
-//        statusChangeMap.put(EnumManager.LabTaskStatus.unhandled, unhandledStatusHandler());
-//        statusChangeMap.put(EnumManager.LabTaskStatus.binded, bindedStatusHandler());
-//        statusChangeMap.put(EnumManager.LabTaskStatus.allocated, allocatedStatusHandler());
-//        statusChangeMap.put(EnumManager.LabTaskStatus.testing, testingStatusHandler());
-//        statusChangeMap.put(EnumManager.LabTaskStatus.saved, savedStatusHandler());
-//        statusChangeMap.put(EnumManager.LabTaskStatus.submitted, submittedStatusHandler());
-//
-//    }
-    
-
     public static StatusChangeResponse initedStatusHandler(EnumManager.LabTaskStatus targetStatus) {
         if (targetStatus.ordinal() <= EnumManager.LabTaskStatus.binded.ordinal()) {
             return new StatusChangeResponse(true, "状态变更成功");

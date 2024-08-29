@@ -30,8 +30,10 @@ public class SwaggerConfig {
     @Bean
     public Docket docket() {
         return new Docket(DocumentationType.OAS_30)
-                .select().apis(RequestHandlerSelectors.basePackage("com.kingmed.immuno.controller"))
-                .paths(PathSelectors.any()).build()
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.kingmed.immuno.controller"))
+                .paths(PathSelectors.any())
+                .build()
                 .apiInfo(setApiInfo());
     }
     private ApiInfo setApiInfo() {

@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * ;
+ * 测试项目的详细信息
  * @author : http://www.chiner.pro
  * @date : 2023-8-25
  */

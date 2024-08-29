@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.kingmed.immuno.common.EnumManager;
 import com.kingmed.immuno.common.MapperHelpper;
+import com.kingmed.immuno.entity.Device;
 import com.kingmed.immuno.entity.KmcsTask;
 import com.kingmed.immuno.entity.KmcsUser;
 import com.kingmed.immuno.entity.LabTask;
@@ -29,6 +30,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = DemoApplication.class)
@@ -60,21 +62,18 @@ public class DemoApplicationTests {
     @Autowired
     private BaseApiServiceImpl baseApiService;
 
+    /**
+     * 随意测试
+     */
     @Test
     public void testAny() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-
-        System.out.println(EnumManager.LabTaskStatus.valueOf("inited").getValue());
-        System.out.println(StatusChangeResponse.getStatusChangeResult(EnumManager.LabTaskStatus.inited));
-        QueryWrapper<LabTask> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("id",186).last("for update");
-        LabTask labTask = labTaskMapper.selectOne(queryWrapper);
-        System.out.println(labTask);
-
+        QueryWrapper<Device> deviceQueryWrapper = new QueryWrapper<>();
+        deviceQueryWrapper.select("*");
+        List<Device> devices = deviceMapper.selectList(deviceQueryWrapper);
+        System.out.println(devices);
     }
     @Test
     public void testMessageFlow() throws IOException, RemotingException, InterruptedException, MQClientException {
-
-
         KmcsTask kmcsTask = kmcsTaskMapper.selectById("testing@taskId--1");
         System.out.println(kmcsTask.getVersion());
         System.out.println(kmcsTask);

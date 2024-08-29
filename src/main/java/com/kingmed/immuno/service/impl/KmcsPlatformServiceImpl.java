@@ -7,6 +7,7 @@ import com.kingmed.immuno.model.dataModel.fileClass.FileUploadParam;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
+@Service
 public class KmcsPlatformServiceImpl extends BaseApiServiceImpl{
     public FileUpload findByFileUploadId(FileUploadParam fileUploadParam){
         HttpHeaders headers = new HttpHeaders();

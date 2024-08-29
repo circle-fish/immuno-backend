@@ -7,9 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * ;
- * @author : http://www.chiner.pro
- * @date : 2023-8-25
+ * 储存设备基本信息
  */
 @ApiModel(value = "",description = "")
 @TableName("device")

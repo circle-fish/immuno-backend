@@ -31,11 +31,12 @@ public class KmcsTaskController{
      * @return 实例对象
      */
     @ApiOperation("通过ID查询单条数据")
-    @GetMapping("getKmcsTaskById/{taskid}")
-    public ResponseEntity<KmcsTask> queryById(String taskId){
+    @GetMapping("/getKmcsTaskById/{taskid}")
+    public ResponseEntity<KmcsTask> queryById(@PathVariable("taskid") String taskId){
         return ResponseEntity.ok(kmcsTaskService.queryById(taskId));
     }
-    @PostMapping("/getKmcsTask")
+    @ApiOperation("通过请求获取数据")
+    @PostMapping("/getKmcsTaskByRequest")
      public ResponseEntity<KmcsTask> getKmcsTask(@RequestBody TaskQueryRequest req)
     {
         System.out.println(req);

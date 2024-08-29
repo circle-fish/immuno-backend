@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * ;
+ * Kmcs测试项目与实验室测试项目之间的关系映射
  * @author : http://www.chiner.pro
  * @date : 2023-8-25
  */

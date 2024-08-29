@@ -31,8 +31,8 @@ public class HeliosAiTaskController{
      * @return 实例对象
      */
     @ApiOperation("通过ID查询单条数据")
-    @GetMapping("{id}")
-    public ResponseEntity<HeliosAiTask> queryById(Integer id){
+    @GetMapping("getById/{id}")
+    public ResponseEntity<HeliosAiTask> queryById(@PathVariable("id") Integer id){
         return ResponseEntity.ok(heliosAiTaskService.queryById(id));
     }
     
@@ -66,8 +66,8 @@ public class HeliosAiTaskController{
      * @return 实例对象
      */
     @ApiOperation("新增数据")
-    @PostMapping
-    public ResponseEntity<HeliosAiTask> add(HeliosAiTask heliosAiTask){
+    @PostMapping("/upsert")
+    public ResponseEntity<HeliosAiTask> add(@RequestBody HeliosAiTask heliosAiTask){
         return ResponseEntity.ok(heliosAiTaskService.insert(heliosAiTask));
     }
     

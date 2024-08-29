@@ -32,8 +32,8 @@ public class KmcsUserController{
      * @return 实例对象
      */
     @ApiOperation("通过ID查询单条数据")
-    @GetMapping("{id}")
-    public ResponseEntity<KmcsUser> queryById(Integer id){
+    @GetMapping("getById/{id}")
+    public ResponseEntity<KmcsUser> queryById(@PathVariable("id") Integer id){
         return ResponseEntity.ok(kmcsUserService.queryById(id));
     }
     
@@ -67,7 +67,7 @@ public class KmcsUserController{
      * @return 实例对象
      */
     @ApiOperation("新增数据")
-    @PostMapping
+    @PostMapping("/addKmcsUser")
     public ResponseEntity<KmcsUser> add(KmcsUser kmcsUser){
         return ResponseEntity.ok(kmcsUserService.insert(kmcsUser));
     }

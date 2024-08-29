@@ -1,5 +1,6 @@
 package com.kingmed.immuno.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kingmed.immuno.entity.HeliosReagent;
 import com.kingmed.immuno.service.HeliosReagentService;
 import io.swagger.annotations.Api;
@@ -31,8 +32,8 @@ public class HeliosReagentController{
      * @return 实例对象
      */
     @ApiOperation("通过ID查询单条数据")
-    @GetMapping("{id}")
-    public ResponseEntity<HeliosReagent> queryById(Integer id){
+    @GetMapping("getById/{id}")
+    public ResponseEntity<HeliosReagent> queryById(@PathVariable("id")Integer id){
         return ResponseEntity.ok(heliosReagentService.queryById(id));
     }
     
@@ -51,7 +52,7 @@ public class HeliosReagentController{
         long size = pageRequest.getPageSize();
         //2.分页查询
         /*把Mybatis的分页对象做封装转换，MP的分页对象上有一些SQL敏感信息，还是通过spring的分页模型来封装数据吧*/
-        com.baomidou.mybatisplus.extension.plugins.pagination.Page<HeliosReagent> pageResult = heliosReagentService.paginQuery(heliosReagent, current,size);
+        Page<HeliosReagent> pageResult = heliosReagentService.paginQuery(heliosReagent, current,size);
         //3. 分页结果组装
         List<HeliosReagent> dataList = pageResult.getRecords();
         long total = pageResult.getTotal();

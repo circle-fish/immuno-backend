@@ -5,6 +5,7 @@ import com.kingmed.immuno.entity.LabTask;
 import com.kingmed.immuno.mapper.LabTaskMapper;
 import com.kingmed.immuno.model.dataModel.LabUser;
 import com.kingmed.immuno.service.LabTaskService;
+import com.kingmed.immuno.service.impl.LabTaskServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class LabTaskController{
     @Autowired
     private LabTaskMapper labTaskMapper;
     @Autowired
-    private LabTaskService labTaskService;
+    private LabTaskServiceImpl labTaskService;
 
     
     /** 
@@ -126,7 +127,7 @@ public class LabTaskController{
       */
      @ApiOperation("搁置任务列表")
      @PostMapping("/layAsideLabTasks")
-     public ResponseEntity<Tuple> layAsideLabTasks( @RequestBody  List<Integer> labTaskIds){
+     public ResponseEntity<Tuple> layAsideLabTasks( @RequestParam("labTaskId") List<Integer> labTaskIds){
          List<LabTask> labTasks = new ArrayList<>();
          for(Integer id : labTaskIds) {
              labTasks.add(labTaskMapper.selectById(id));
@@ -142,11 +143,35 @@ public class LabTaskController{
       */
      @ApiOperation("纳入任务列表")
      @PostMapping("/bringIntoLabTasks")
-     public ResponseEntity<Tuple> bringIntoLabTasks(List<Integer> labTaskIds, LabUser labUser){
+     public ResponseEntity<Tuple> bringIntoLabTasks(@RequestParam("labTaskId") List<Integer> labTaskIds,
+                                                    @RequestBody LabUser labUser){
          List<LabTask> labTasks = new ArrayList<>();
          for(Integer id : labTaskIds) {
              labTasks.add(labTaskMapper.selectById(id));
          }
          return ResponseEntity.ok((labTaskService.bringIntoLabTask(labTasks,labUser)));
      }
+
+     /**
+      * 输入需要纳入检测批次的任务Id队列。把它们转换为testing状态
+      * @param labTaskIds
+      * @param labUser
+      * @return
+      */
+     @ApiOperation("将分配好的任务队列纳入检测批次")
+     @PostMapping("/convertStatusToTesting")
+     public ResponseEntity<List<LabTask>> convertStatusToTesting(@RequestParam("id")  List<Integer> labTaskIds,
+                                                                 @RequestBody LabUser labUser){
+         List<LabTask> labTasks = new ArrayList<>();
+         List<LabTask> testingTasks = new ArrayList<>();
+         for(Integer id : labTaskIds) {
+             labTasks.add(labTaskMapper.selectById(id));
+         }
+         for(LabTask labTask : labTasks){
+             LabTask testingTask = labTaskService.convertStatusToTesting(labTask,labUser.getOperatorName());
+             testingTasks.add(testingTask);
+         }
+         return ResponseEntity.ok(testingTasks);
+     }
+
 }

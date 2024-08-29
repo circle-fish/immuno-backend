@@ -7,6 +7,10 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 存储返回结果的封装类
+ * @param <T>
+ */
 @Data
 @ApiModel(value="接口返回对象", description="接口返回对象")
 public class Result<T> implements Serializable {

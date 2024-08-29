@@ -125,17 +125,6 @@ public class ExcelGenerator {
          * 打印一个设备中一个批次LabOrder的清单
          * 在分配逻辑中确保
          */
-        //相应的值暂时用手动创造
-//        secondCell0.setCellValue(String.format("试剂厂家：%s\n检测方法：%s\n是否按操作说明书操作：是    否",
-//                heliosReagent.getName(),
-//                heliosLabTaskWithPostion.getLabTestItemName())
-//        );//厂家不知，改为试剂名称??? 检测方法???
-//
-//        secondCell1.setCellValue(String.format("室内温度：%s\n室内湿度：%s\n设备编号：%s",
-//                labOrder.getTemperature(),
-//                labOrder.getWet(),
-//                virtualMachine.getDeviceCode()
-//        ));
         secondCell0.setCellValue(String.format("试剂厂家：%s\n检测方法：%s\n是否按操作说明书操作：是    否",
                 excelHeaderInfo.getReagentManufacturer(), excelHeaderInfo.getDetectionMethod()
         ));

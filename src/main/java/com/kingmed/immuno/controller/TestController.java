@@ -96,7 +96,7 @@ public class TestController {
         TaskAllocationResult result = labTaskAllocationService.heliosTaskAllocation(labTasks,
                 devices,heliosReagent,"admin");
 
-        Set<VirtualMachine> virtualMachines = labTaskAllocationService.getVirtualMachineList();
+        Set< VirtualMachine> virtualMachines = labTaskAllocationService.getVirtualMachineList();
 
         /**
          * 今日任务导出，所有任务分配情况一键导出

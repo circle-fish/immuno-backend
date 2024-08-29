@@ -24,7 +24,8 @@ import java.util.List;
 @Service
 @RocketMQMessageListener(
         topic= "mqtest",
-        consumerGroup = "mqtest-consumer")
+        consumerGroup = "mqtest-consumer"
+)
 
 public class RQConsumer implements RocketMQListener<String> {
 

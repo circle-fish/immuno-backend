@@ -57,4 +57,5 @@ public interface HeliosAiTaskService{
      * @return
      */
     HeliosAiTask upsertHeliosAiTask(HeliosImage heliosImage, String operatorName);
+
 }

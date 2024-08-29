@@ -14,7 +14,7 @@ import java.util.Date;
 
 @Data
 /**
- * 通用字段 （包括ID）
+ * 储存通用字段 （包括ID）
  * */
 public class BaseEntity implements Serializable {
 
